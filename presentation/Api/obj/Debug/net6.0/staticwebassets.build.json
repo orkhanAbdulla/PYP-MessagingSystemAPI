@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "q83gcf3SHvbvYw1Ml5pwbtagYdOEflbJiVs3r4KSkU4=",
+  "Source": "MessagingSystemApp.Api",
+  "BasePath": "_content/MessagingSystemApp.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

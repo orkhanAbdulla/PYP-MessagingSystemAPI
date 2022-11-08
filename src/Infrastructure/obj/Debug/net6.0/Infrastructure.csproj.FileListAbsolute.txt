@@ -1,0 +1,17 @@
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\bin\Debug\net6.0\MessagingSystemApp.Domain.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\bin\Debug\net6.0\MessagingSystemApp.Domain.pdb
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.AssemblyReference.cache
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\Infrastructure.AssemblyInfoInputs.cache
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\Infrastructure.AssemblyInfo.cs
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.CopyComplete
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\bin\Debug\net6.0\MessagingSystemApp.Infrastructure.deps.json
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\bin\Debug\net6.0\MessagingSystemApp.Infrastructure.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\bin\Debug\net6.0\MessagingSystemApp.Infrastructure.pdb
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\bin\Debug\net6.0\MessagingSystemApp.Application.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\bin\Debug\net6.0\MessagingSystemApp.Application.pdb
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\MessagingSystemApp.Infrastructure.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\refint\MessagingSystemApp.Infrastructure.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\MessagingSystemApp.Infrastructure.pdb
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\Infrastructure\obj\Debug\net6.0\ref\MessagingSystemApp.Infrastructure.dll
