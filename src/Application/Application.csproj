@@ -19,14 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Dtos\" />
-    <Folder Include="CQRS\Commands\Response\" />
-    <Folder Include="CQRS\Commands\Request\" />
-    <Folder Include="CQRS\Handlers\CommandHandlers\" />
     <Folder Include="CQRS\Handlers\QueryHandlers\" />
-    <Folder Include="CQRS\Queries\Response\" />
     <Folder Include="CQRS\Queries\Request\" />
-    <Folder Include="CQRS\Validators\CommandValidators\" />
+    <Folder Include="CQRS\Queries\Response\EmployeeResponse\" />
     <Folder Include="CQRS\Validators\QueryValidators\" />
   </ItemGroup>
 
