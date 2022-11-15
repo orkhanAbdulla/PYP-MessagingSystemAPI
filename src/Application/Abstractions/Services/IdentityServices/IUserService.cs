@@ -13,7 +13,7 @@ namespace MessagingSystemApp.Application.Abstractions.Identity
 {
     public interface IUserService
     {
-
+        
         Task<Employee> GetUserAsync(Expression<Func<Employee, bool>>? expression=null);
         Task<SignInResult> CheckPasswordSignInAsync(Employee employee,string password);
         Task<bool> ChekCurrentPasswordAsync(Employee employee, string password);
@@ -22,6 +22,7 @@ namespace MessagingSystemApp.Application.Abstractions.Identity
         public Task<Result> ChangePasswordAsync(Employee employee, string currentPassword, string newPassword);
         Task<string> GetUserNameAsync(string userId);
         Task<(Result Result, string UserId)> CreateUserAsync(string Username, string Email, string password);
+        Task UpdateRefreshToken(Employee employee, string refreshToken,DateTime accessTokenDate,int addOnAccessTokenDate);
         Task<Result> DeleteUserAsync(string userId);
         Task<IEnumerable<UserDto>> GetAll();
     }

@@ -31,7 +31,8 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeC
             Token token=new ();
             if (result.IsNotAllowed) throw new Exception("Lutfen emaili doqruluyun");//TODO: Burada VerifyAuthenticationException  olacaq
             if (!result.Succeeded) throw new Exception("shifre ve ya parol yanlishdi");//TODO: Burada AuthenticationException  olacaq
-            token = _tokenService.GenerateAccessToken(employee, 5);
+            token = _tokenService.GenerateAccessToken(employee, 3);
+            await _userService.UpdateRefreshToken(employee, token.RefreshToken, token.Expiration, 2);
             return new() { Token = token };
         }
     }

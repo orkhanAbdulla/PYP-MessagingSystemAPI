@@ -10,6 +10,7 @@ namespace MessagingSystemApp.Application.Abstractions.Services.TokenServices
 {
     public interface ITokenService
     {
-        public Token GenerateAccessToken(Employee user, int minute);
+        public Token GenerateAccessToken(Employee user, int second);
+        public string GenerateRefreshToken();
     }
 }

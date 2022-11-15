@@ -10,41 +10,53 @@ namespace MessagingSystemApp.Api.Controllers
     [ApiController]
     public class EmployeeManagerController : ApiBaseController
     {
-        [HttpPost("Register")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromForm] CreateEmployeeCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpPost("EmployeeEmailConfirmation")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> EmployeeEmailConfirmation([FromForm]EmployeeEmailConfirmationCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpPost("Login")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm] LoginEmployeeCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpPost("ForgetPassword")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RefreshTokenLogin([FromQuery]RefreshTokenLoginCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPost("[action]")]
         public async Task<IActionResult> ForgetPassword([FromForm] ForgetPasswordCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpPost("VerifyForgetPassword")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> VerifyForgetToken([FromForm] VerifyForgetPasswordCommandRequest command) 
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpPost("UpdatePassword")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> UpdatePassword([FromForm] UpdatePasswordCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpPost("ChangePassword")]
+        [HttpPost("[action]")]
         [Authorize(AuthenticationSchemes = "Admin")]
         public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }
+        [HttpGet("")]
+        [Authorize(AuthenticationSchemes = "Admin")]
+        public IActionResult Test()
+        {
+            return Ok("okey");
+        }
+
     }
 }

@@ -19,6 +19,8 @@ namespace MessagingSystemApp.Domain.Identity
         }
         public string Fullname { get; set; } = null!;
         public string? SignalRId { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenEndDate { get; set; }
         public ICollection<EmployeeChannel> EmployeeChannels { get; set; }
         public ICollection<Connection> Senders { get; set; }
         public ICollection<Connection> Recivers { get; set; }

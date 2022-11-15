@@ -109,5 +109,11 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
             return result.ToApplicationResult();
         }
 
+        public async Task UpdateRefreshToken(Employee employee, string refreshToken, DateTime accessTokenDate, int addOnAccessTokenDate)
+        {
+            employee.RefreshToken = refreshToken;
+            employee.RefreshTokenEndDate = accessTokenDate.AddHours(addOnAccessTokenDate);
+            await _userManager.UpdateAsync(employee );
+        }
     }
 }
