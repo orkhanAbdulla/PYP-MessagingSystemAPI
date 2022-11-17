@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
+using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.CQRS.Commands.Request.EmployeeRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse;
 using MessagingSystemApp.Domain.Identity;
@@ -27,7 +28,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
         public async Task<VerifyForgetPasswordCommandResponse> Handle(VerifyForgetPasswordCommandRequest request, CancellationToken cancellationToken)
         {
             Employee employee = await _userService.GetUserAsync(x => x.Id == request.UserId);
-            if (employee==null) throw new Exception();  // TODO: Burada NotFoundException  olacaq
+            if (employee==null) throw new NotFoundException(nameof(Employee), request.UserId); // TODO:qalsin 
             bool state =await _authService.VerifyForgetPasswordAsync(employee, request.Token);
             return new VerifyForgetPasswordCommandResponse() { State = state };
         }

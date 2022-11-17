@@ -10,6 +10,5 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse
     public class ChangePasswordCommandResponse
     {
         public Token Token { get; set; } = null!;
-        public Result Result { get; set; } = null!;
     }
 }

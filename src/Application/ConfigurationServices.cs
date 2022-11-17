@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using MessagingSystemApp.Application.Common.Behaviorus;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace MessagingSystemApp.Application
             serviceCollection.AddMediatR(Assembly.GetExecutingAssembly());
             serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
             serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
+            serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             return serviceCollection;
         }
     }

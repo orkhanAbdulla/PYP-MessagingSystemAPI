@@ -1,15 +1,11 @@
-﻿using MediatR;
+﻿
+using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.MailServices;
-using MessagingSystemApp.Application.Common.Models;
+using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.CQRS.Commands.Request.UserRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeCommandHandler
 {
@@ -28,13 +24,10 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeC
         public async Task<CreateEmployeeCommandResponse> Handle(CreateEmployeeCommandRequest request, CancellationToken cancellationToken)
         {
             var serviceResult = await _userService.CreateUserAsync(request.Username, request.Email, request.Password);
-            if (!serviceResult.Result.Successed)
-            {
-                throw new Exception(); // TODO: Burada ValidationException  olacaq
-            }
+            if (!serviceResult.IdentityResult.Succeeded) throw new ValidationException(serviceResult.IdentityResult);
             string token = await _authService.GenerateEmailConfirmationTokenAsync(serviceResult.UserId);
             await _mailService.SendEmailConfirmationAsync(request.Email, serviceResult.UserId, token);
-            return new() { Result = serviceResult.Result, UserId = serviceResult.UserId};
+            return new() { UserId = serviceResult.UserId};
         }
     }
 }

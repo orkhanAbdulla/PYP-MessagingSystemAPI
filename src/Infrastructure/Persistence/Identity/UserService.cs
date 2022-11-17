@@ -1,4 +1,5 @@
-﻿using MessagingSystemApp.Application.Abstractions.Identity;
+﻿using MediatR;
+using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Common.Dtos.UserDtos;
 using MessagingSystemApp.Application.Common.Helpers;
 using MessagingSystemApp.Application.Common.Models;
@@ -20,14 +21,14 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
             _signInManager = signInManager;
         }
 
-        public async Task<Result> ChangePasswordAsync(Employee employee, string currentPassword, string newPassword)
+        public async Task<IdentityResult> ChangePasswordAsync(Employee employee, string currentPassword, string newPassword)
         {
             var result=await _userManager.ChangePasswordAsync(employee, currentPassword, newPassword);
             if (result.Succeeded)
             {
                 await _userManager.UpdateSecurityStampAsync(employee);
             }
-            return result.ToApplicationResult();
+            return result;
         }
 
         public async Task<SignInResult> CheckPasswordSignInAsync(Employee employee, string password)
@@ -50,7 +51,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
             return _userManager.CheckPasswordAsync(employee, password);
         }
 
-        public async Task<(Result Result, string UserId)> CreateUserAsync(string Username, string Email, string password)
+        public async Task<(IdentityResult IdentityResult, string UserId)> CreateUserAsync(string Username, string Email, string password)
         {
             Employee employee = new()
             {
@@ -60,18 +61,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
                
             };
             var result = await _userManager.CreateAsync(employee, password);
-            return (result.ToApplicationResult(), employee.Id);
-        }
-
-        public async Task<Result> DeleteUserAsync(string userId)
-        {
-            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
-            return user != null ? await DeleteUserAsync(user) : Result.Success();
-        }
-        public async Task<Result> DeleteUserAsync(Employee user)
-        {
-            var result = await _userManager.DeleteAsync(user);
-            return result.ToApplicationResult();
+            return (result, employee.Id);
         }
 
         public async Task<IEnumerable<UserDto>> GetAll()
@@ -98,7 +88,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
             return user.UserName;
         }
 
-        public async Task<Result> UpdatePasswordAsync(Employee employee, string token, string newPassword)
+        public async Task<IdentityResult> UpdatePasswordAsync(Employee employee, string token, string newPassword)
         {
             token= token.UrlDecode();
             var result= await _userManager.ResetPasswordAsync(employee, token, newPassword);
@@ -106,7 +96,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
             {
                 await _userManager.UpdateSecurityStampAsync(employee);
             }
-            return result.ToApplicationResult();
+            return result;
         }
 
         public async Task UpdateRefreshToken(Employee employee, string refreshToken, DateTime accessTokenDate, int addOnAccessTokenDate)

@@ -38,11 +38,11 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
             return token;
         }
 
-        public async Task<Result> VerifyEmailConfirmationToken(Employee employee, string token)
+        public async Task<IdentityResult> VerifyEmailConfirmationToken(Employee employee, string token)
         {
             token=token.UrlDecode();
             var result = await _userManager.ConfirmEmailAsync(employee, token);
-            return result.ToApplicationResult();
+            return result;
         }
 
         public async Task<bool> VerifyForgetPasswordAsync(Employee employee, string token)

@@ -26,12 +26,11 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeC
         public async Task<LoginEmployeeCommandResponse> Handle(LoginEmployeeCommandRequest request, CancellationToken cancellationToken)
         {
             Employee employee = await _userService.GetUserAsync(x => x.Email == request.Email);
-            if (employee is null) throw new Exception("shifre ve ya parol yanlishdi");//TODO: Burada AuthenticationException  olacaq
+            if (employee is null) throw new UnauthorizedAccessException("The email or password is incorrect");
             var result =await _userService.CheckPasswordSignInAsync(employee, request.Password);
-            Token token=new ();
-            if (result.IsNotAllowed) throw new Exception("Lutfen emaili doqruluyun");//TODO: Burada VerifyAuthenticationException  olacaq
-            if (!result.Succeeded) throw new Exception("shifre ve ya parol yanlishdi");//TODO: Burada AuthenticationException  olacaq
-            token = _tokenService.GenerateAccessToken(employee, 3);
+            if (result.IsNotAllowed) throw new UnauthorizedAccessException("Please verify your email");
+            if (!result.Succeeded) throw new UnauthorizedAccessException("The email or password is incorrect");
+            var token = _tokenService.GenerateAccessToken(employee, 3);
             await _userService.UpdateRefreshToken(employee, token.RefreshToken, token.Expiration, 2);
             return new() { Token = token };
         }

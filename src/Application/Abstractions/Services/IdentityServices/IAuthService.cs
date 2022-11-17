@@ -1,5 +1,6 @@
 ﻿using MessagingSystemApp.Application.Common.Models;
 using MessagingSystemApp.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace MessagingSystemApp.Application.Abstractions.Services.IdentityServices
         public Task<string> ForgetPassawordAsync(Employee employee);
         public Task<bool> VerifyForgetPasswordAsync(Employee employee, string token);
         public Task<string>GenerateEmailConfirmationTokenAsync(string Id);
-        public Task<Result> VerifyEmailConfirmationToken(Employee employee,string token);
+        public Task<IdentityResult> VerifyEmailConfirmationToken(Employee employee,string token);
     }
 }

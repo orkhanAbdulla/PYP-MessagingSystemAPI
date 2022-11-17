@@ -9,6 +9,5 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse
 {
     public class UpdatePasswordCommandResponse
     {
-        public Result Result { get; set; } = null!;
     }
 }

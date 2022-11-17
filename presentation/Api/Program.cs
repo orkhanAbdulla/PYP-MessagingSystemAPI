@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using MessagingSystemApp.Api.Filters;
 using MessagingSystemApp.Application;
 using MessagingSystemApp.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,8 +10,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+builder.Services.AddControllers(options=>options.Filters.Add<ApiExceptionFilterAttribute>());
+builder.Services.AddFluentValidationAutoValidation(configuration => configuration.DisableDataAnnotationsValidation = false).AddFluentValidationClientsideAdapters();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {

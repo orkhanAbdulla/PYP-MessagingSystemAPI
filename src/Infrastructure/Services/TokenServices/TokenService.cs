@@ -21,7 +21,7 @@ namespace MessagingSystemApp.Infrastructure.Services.TokenServices
         public Token GenerateAccessToken(Employee user, int day)
         {
             Token token=new Token();
-            token.Expiration=DateTime.Now.AddDays(2);
+            token.Expiration=DateTime.Now.AddDays(day);
 
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:SecurityKey"]));
 

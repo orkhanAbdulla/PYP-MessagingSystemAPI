@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
+using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Models;
 using MessagingSystemApp.Application.CQRS.Commands.Request.EmployeeRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse;
 using MessagingSystemApp.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,14 +26,10 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
         public async Task<UpdatePasswordCommandResponse> Handle(UpdatePasswordCommandRequest request, CancellationToken cancellationToken)
         {
             Employee employee = await _userService.GetUserAsync(x => x.Id == request.UserId);
-            if (employee == null) throw new Exception();  // TODO: Burada NotFoundException  olacaq
-            Result result = await _userService.UpdatePasswordAsync(employee, request.Token, request.Password);
-            if (!result.Successed)
-            {
-                throw new Exception(); // TODO: Burada ValidationException  olacaq
-            }
-            return new UpdatePasswordCommandResponse() { Result=result };
-            
+            if (employee == null) throw new NotFoundException(nameof(Employee),request.UserId);
+            IdentityResult result = await _userService.UpdatePasswordAsync(employee, request.Token, request.Password);
+            if (!result.Succeeded) throw new ValidationException(result);
+            return new UpdatePasswordCommandResponse() { };
         }
     }
 }

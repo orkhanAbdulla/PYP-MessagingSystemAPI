@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Services.TokenServices;
+using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Models;
 using MessagingSystemApp.Application.CQRS.Commands.Request.EmployeeRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse;
@@ -27,20 +28,15 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
         public async Task<ChangePasswordCommandResponse> Handle(ChangePasswordCommandRequest request, CancellationToken cancellationToken)
         {
             Employee employee = await _userService.GetUserAsync(x => x.UserName == request.Username);
-            if (employee == null) throw new Exception("Username notfound");  // TODO: Burada NotFoundException  olacaq
+            if (employee == null) throw new NotFoundException(nameof(Employee), request.Username);
             var success = !await _userService.ChekCurrentPasswordAsync(employee, request.CurrentPassword);
-            if (success) throw new Exception("Please enter the current password correctly"); // TODO: Buraya fikirlesh
+            if (success) throw new BadRequestException("Please enter the current password correctly");
             var IsSame = _userService.CheckPasswordsIsSame(employee, request.NewPassword);
-            if (IsSame) throw new Exception("Your new and old password cannot be the same"); // TODO: Buraya fikirlesh
+            if (IsSame) throw new BadRequestException("Your new and old password cannot be the same");
             var result = await _userService.ChangePasswordAsync(employee, request.CurrentPassword, request.NewPassword);
-            Token token = new Token();
-            if (result.Successed)
-            {
-                token = _tokenService.GenerateAccessToken(employee, 5);
-            }
-
-            return new ChangePasswordCommandResponse() { Result = result, Token = token };
-
+            if (!result.Succeeded) throw new ValidationException(result);
+            var token = _tokenService.GenerateAccessToken(employee, 5);
+            return new ChangePasswordCommandResponse() { Token=token };
         }
     }
 }

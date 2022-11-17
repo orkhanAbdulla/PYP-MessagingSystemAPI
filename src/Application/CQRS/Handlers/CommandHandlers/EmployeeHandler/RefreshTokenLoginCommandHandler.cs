@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Services.TokenServices;
+using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Models;
 using MessagingSystemApp.Application.CQRS.Commands.Request.EmployeeRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse;
@@ -27,8 +28,8 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
         public async Task<RefreshTokenLoginCommandResponse> Handle(RefreshTokenLoginCommandRequest request, CancellationToken cancellationToken)
         {
             Employee employee=await _userService.GetUserAsync(x=>x.RefreshToken==request.RefreshToken);
-            if (employee==null) throw new Exception();  // TODO: Burada NotFoundException  olacaq
-            if (employee.RefreshTokenEndDate<DateTime.Now) throw new Exception("RefreshTokenin vaxti bitib");  // TODO: RefreshTokenin vaxti bitib
+            if (employee==null) throw new NotFoundException(nameof(Employee), request.RefreshToken); 
+            if (employee.RefreshTokenEndDate < DateTime.Now) throw new ExpiredException();
             Token token = _tokenService.GenerateAccessToken(employee, 2);
             await _userService.UpdateRefreshToken(employee, token.RefreshToken, token.Expiration, 3);
             return new RefreshTokenLoginCommandResponse() { Token = token };

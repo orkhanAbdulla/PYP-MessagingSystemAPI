@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
+using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Models;
 using MessagingSystemApp.Application.CQRS.Commands.Request.EmployeeRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Request.UserRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse;
 using MessagingSystemApp.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +30,11 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
         public async Task<EmployeeEmailConfirmationCommandResponse> Handle(EmployeeEmailConfirmationCommandRequest request, CancellationToken cancellationToken)
         {
             Employee employee = await _userService.GetUserAsync(x => x.Id == request.UserId);
-            if (employee==null)  throw new Exception();  // TODO: Burada NotFoundException  olacaq
-            Result result = await _authService.VerifyEmailConfirmationToken(employee, request.Token);
-            if (!result.Successed)
+            if (employee==null)  throw new NotFoundException(nameof(Employee),request.UserId);
+            IdentityResult result = await _authService.VerifyEmailConfirmationToken(employee, request.Token);
+            if (!result.Succeeded)
             {
-                throw new Exception("problem var"); // TODO: Burada birsey fikirlesh
+                throw new ValidationException(result);
             }
             return new EmployeeEmailConfirmationCommandResponse() { Successed=true};
         }
