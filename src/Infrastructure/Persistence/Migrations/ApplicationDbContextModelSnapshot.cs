@@ -58,6 +58,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsChannel")
                         .HasColumnType("bit");
 
@@ -66,6 +69,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(50)
@@ -124,6 +130,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EmployeeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -136,6 +145,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message")
                         .IsRequired()

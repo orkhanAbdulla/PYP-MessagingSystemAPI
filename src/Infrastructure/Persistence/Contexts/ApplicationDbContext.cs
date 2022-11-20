@@ -1,6 +1,7 @@
-﻿using MessagingSystemApp.Application.Abstracts.Common;
+﻿ using MessagingSystemApp.Application.Abstracts.Common;
 using MessagingSystemApp.Domain.Entities;
 using MessagingSystemApp.Domain.Identity;
+using MessagingSystemApp.Infrastructure.Persistence.Interceptors;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,7 +15,11 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Contexts
 {
     public class ApplicationDbContext : IdentityDbContext<Employee>, IApplicationDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options){}
+        private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options)
+        {
+            _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
+        }
         public DbSet<Connection> Connections => Set<Connection>();
 
         public DbSet<EmployeeChannel> EmployeeChannels => Set<EmployeeChannel>();
@@ -29,6 +34,10 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Contexts
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
         }
     }
 }

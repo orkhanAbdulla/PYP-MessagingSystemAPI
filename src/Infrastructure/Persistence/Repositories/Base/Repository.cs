@@ -87,7 +87,10 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Repositories.Base
             }
             return query;
         }
-
+        public async Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> exp)
+        {
+            return await Table.AnyAsync(exp);
+        }
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {

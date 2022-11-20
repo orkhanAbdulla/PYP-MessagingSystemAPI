@@ -1,0 +1,12 @@
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\bin\Debug\net6.0\MessagingSystemApp.SignalR.deps.json
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\bin\Debug\net6.0\MessagingSystemApp.SignalR.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\bin\Debug\net6.0\MessagingSystemApp.SignalR.pdb
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\SignalR.csproj.AssemblyReference.cache
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\SignalR.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\SignalR.AssemblyInfoInputs.cache
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\SignalR.AssemblyInfo.cs
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\SignalR.csproj.CoreCompileInputs.cache
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\MessagingSystemApp.SignalR.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\refint\MessagingSystemApp.SignalR.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\MessagingSystemApp.SignalR.pdb
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\ref\MessagingSystemApp.SignalR.dll

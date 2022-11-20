@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest;
+using MessagingSystemApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +23,7 @@ namespace MessagingSystemApp.Application.Common.Mappings
         public MappingProfile()
         {
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+            //CreateMap<Connection, CreateConnectionCommandRequest>().ForMember(dest => dest.ChannelName, opt => opt.MapFrom(src => src.Name));
         }
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {

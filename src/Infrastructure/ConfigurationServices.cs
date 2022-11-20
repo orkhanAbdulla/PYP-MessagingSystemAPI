@@ -1,4 +1,5 @@
 ﻿using MessagingSystemApp.Application.Abstractions.Identity;
+using MessagingSystemApp.Application.Abstractions.Repositories;
 using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.MailServices;
 using MessagingSystemApp.Application.Abstractions.Services.TokenServices;
@@ -7,6 +8,7 @@ using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Domain.Identity;
 using MessagingSystemApp.Infrastructure.Persistence.Contexts;
 using MessagingSystemApp.Infrastructure.Persistence.Identity;
+using MessagingSystemApp.Infrastructure.Persistence.Interceptors;
 using MessagingSystemApp.Infrastructure.Persistence.Repositories;
 using MessagingSystemApp.Infrastructure.Services.MailServices;
 using MessagingSystemApp.Infrastructure.Services.TokenServices;
@@ -24,6 +26,7 @@ namespace MessagingSystemApp.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
+            serviceCollection.AddScoped<AuditableEntitySaveChangesInterceptor>();
             ///AddContext
             serviceCollection.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),builderoptions=>builderoptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
@@ -47,6 +50,7 @@ namespace MessagingSystemApp.Infrastructure
             serviceCollection.AddScoped<IPostRepository, PostRepository>();
             serviceCollection.AddScoped<IAttachmentRepository, AttachmentRepository>();
             serviceCollection.AddScoped<IReactionRepository, ReactionRepository>();
+            serviceCollection.AddScoped<IEmployeeChannelRepository, EmployeeChannelRepository>();
             //AddContainerServices
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IMailService, MailService>();
