@@ -23,5 +23,10 @@ namespace MessagingSystemApp.Api.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddUserToChannel([FromForm] AddUserToChannelCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
     }
 }

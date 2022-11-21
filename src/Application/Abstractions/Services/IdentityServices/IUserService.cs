@@ -20,5 +20,6 @@ namespace MessagingSystemApp.Application.Abstractions.Identity
         Task<(IdentityResult IdentityResult, string UserId)> CreateUserAsync(string Username, string Email, string password);
         Task UpdateRefreshToken(Employee employee, string refreshToken,DateTime accessTokenDate,int addOnAccessTokenDate);
         Task<IEnumerable<UserDto>> GetAll();
+        public Task<bool> IsExistAsync(Expression<Func<Employee, bool>> expression);
     }
 }

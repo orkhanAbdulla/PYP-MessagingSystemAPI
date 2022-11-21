@@ -88,6 +88,11 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
             return user.UserName;
         }
 
+        public async Task<bool> IsExistAsync(Expression<Func<Employee, bool>> expression)
+        {
+            return await _userManager.Users.AnyAsync(expression);
+        }
+
         public async Task<IdentityResult> UpdatePasswordAsync(Employee employee, string token, string newPassword)
         {
             token= token.UrlDecode();
