@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Application.CQRS.Commands.Response.ConnectionResponse
 {
-    public class CreateConnectionCommandResponse
+    public class UpdateConnectionCommandResponse
     {
     }
 }

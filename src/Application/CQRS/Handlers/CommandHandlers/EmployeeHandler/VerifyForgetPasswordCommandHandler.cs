@@ -28,7 +28,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
         public async Task<VerifyForgetPasswordCommandResponse> Handle(VerifyForgetPasswordCommandRequest request, CancellationToken cancellationToken)
         {
             Employee employee = await _userService.GetUserAsync(x => x.Id == request.UserId);
-            if (employee==null) throw new NotFoundException(nameof(Employee), request.UserId); // TODO:qalsin 
+            if (employee==null) throw new NotFoundException(nameof(Employee), request.UserId); 
             bool state =await _authService.VerifyForgetPasswordAsync(employee, request.Token);
             return new VerifyForgetPasswordCommandResponse() { State = state };
         }

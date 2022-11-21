@@ -15,12 +15,8 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.Conne
 {
     public class CreateConnectionCommandRequestValidator:AbstractValidator<CreateConnectionCommandRequest>
     {
-        private readonly IApplicationDbContext _context;
-        private readonly IUserService _userService;
-        public CreateConnectionCommandRequestValidator(IApplicationDbContext context, IUserService userService)
+        public CreateConnectionCommandRequestValidator()
         {
-            _context = context;
-            _userService = userService;
             RuleFor(x => x.UserName).NotEmpty().NotNull();
             RuleFor(x => x.ChannelName).MaximumLength(50);
         }

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.ConnectionHandler
 {
@@ -36,8 +37,9 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Connectio
             if (employee == null) throw new NotFoundException(nameof(Employee), request.UserName);
             if (request.IsChannel && request.ChannelName!=null)
             {
-                bool result = await _employeeChannelRepository.IsExistChannelNameAsync(employee.Id, request.ChannelName);
-                if (!result) throw new BadRequestException("The specified ChannelName already exists");
+                bool IsExistChanelName = await _employeeChannelRepository.
+                    IsExistAsync(x=>x.Channel.Name==request.ChannelName,x=>x.EmployeeId== employee.Id);
+                if (IsExistChanelName) throw new BadRequestException($"ChannelName: \"{request.ChannelName}\" already exists");
                 Connection connection = new Connection()
                 { IsChannel = true ,Name=request.ChannelName};
                 await _connectionRepository.AddAsync(connection);

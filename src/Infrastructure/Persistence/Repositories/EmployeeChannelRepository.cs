@@ -18,9 +18,5 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Repositories
         {
         }
 
-        public async Task<bool> IsExistChannelNameAsync(string EmployeeId, string channelName)
-        {
-            return await Table.Where(x => x.EmployeeId == EmployeeId).AllAsync(y => y.Channel.Name!=null && y.Channel.Name.ToLower() != channelName.ToLower());
-        }
     }
 }

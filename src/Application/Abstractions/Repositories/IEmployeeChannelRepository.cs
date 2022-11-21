@@ -11,6 +11,5 @@ namespace MessagingSystemApp.Application.Abstractions.Repositories
 {
     public interface IEmployeeChannelRepository:IRepository<EmployeeChannel,int>
     {
-        public Task<bool> IsExistChannelNameAsync(string EmployeeId, string channelName);
     }
 }

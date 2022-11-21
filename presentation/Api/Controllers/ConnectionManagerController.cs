@@ -14,9 +14,14 @@ namespace MessagingSystemApp.Api.Controllers
             return Ok(await Mediator.Send(command));
         }
         [HttpPut("[action]")]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update([FromForm] UpdateConnectionCommandRequest command)
         {
-            return Ok();
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> Delete([FromForm] DeleteConnectionCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
         }
     }
 }

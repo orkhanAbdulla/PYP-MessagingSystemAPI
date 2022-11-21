@@ -28,7 +28,7 @@ namespace MessagingSystemApp.Application.Abstracts.Repositories.Base
         bool isOrderBy = true,
         bool tracking = true,
         params string[] includes);
-        public Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> exp);
+        public Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> exp, Expression<Func<TEntity, bool>>? select = null);
         public void Update(TEntity entity);
         void Remove(TEntity entity);
         IQueryable<TEntity> GetQuery(params string[] includes);
