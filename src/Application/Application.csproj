@@ -19,10 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Handlers\QueryHandlers\" />
     <Folder Include="CQRS\Queries\Request\EmployeeRequest\" />
     <Folder Include="CQRS\Queries\Response\EmployeeResponse\" />
-    <Folder Include="CQRS\Validators\QueryValidators\" />
   </ItemGroup>
 
 </Project>

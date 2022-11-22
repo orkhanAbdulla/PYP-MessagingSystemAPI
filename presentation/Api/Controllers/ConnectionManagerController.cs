@@ -1,6 +1,9 @@
 ﻿using MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest;
+using MessagingSystemApp.Application.CQRS.Queries.Request.ConnectionRequest;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Channels;
 
 namespace MessagingSystemApp.Api.Controllers
 {
@@ -28,5 +31,16 @@ namespace MessagingSystemApp.Api.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetChannelListByUser([FromQuery] GetChannelListByUserQueryRequest query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult>GetDirectMessagesListByUser([FromQuery]GetDirectMessagesListByUserQueryRequest query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+
     }
 }
