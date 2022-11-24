@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using MessagingSystemApp.Api.Filters;
 using MessagingSystemApp.Application;
 using MessagingSystemApp.Infrastructure;
+using MessagingSystemApp.Infrastructure.Services.StorageServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -9,7 +10,7 @@ using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(options=>options.Filters.Add<ApiExceptionFilterAttribute>());
 builder.Services.AddFluentValidationAutoValidation(configuration => configuration.DisableDataAnnotationsValidation = false).AddFluentValidationClientsideAdapters();
 builder.Services.AddEndpointsApiExplorer();
@@ -41,6 +42,7 @@ builder.Services.AddSwaggerGen(opt =>
     });
 });
 
+builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -70,10 +72,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStaticFiles();
 
 app.MapControllers();
 

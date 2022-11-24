@@ -18,6 +18,7 @@ namespace MessagingSystemApp.Api.Filters
                 {typeof(UnauthorizedAccessException),HandleUnauthorizedAccessException },
                 {typeof(BadRequestException),HandleBadRequestException },
                 {typeof(ExpiredException),HandleExpiredException},
+                {typeof(FileFormatException),HandleFileFormatException},
             };
         }
         public override void OnException(ExceptionContext context)
@@ -142,6 +143,21 @@ namespace MessagingSystemApp.Api.Filters
             {
                 StatusCode = StatusCodes.Status406NotAcceptable
             };
+
+            context.ExceptionHandled = true;
+        }
+        private void HandleFileFormatException(ExceptionContext context)
+        {
+            var exception = (FileFormatException)context.Exception;
+
+            var details = new ProblemDetails()
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = "FileFormatException",
+                Detail = exception.Message
+            };
+
+            context.Result = new BadRequestObjectResult(details);
 
             context.ExceptionHandled = true;
         }

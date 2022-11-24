@@ -1,11 +1,54 @@
 {
   "Version": 1,
-  "Hash": "q83gcf3SHvbvYw1Ml5pwbtagYdOEflbJiVs3r4KSkU4=",
+  "Hash": "K0CdAjZDHwdVrGf+pOLWrNv2Wq9P2ybHpD7Sb349zhI=",
   "Source": "MessagingSystemApp.Api",
   "BasePath": "_content/MessagingSystemApp.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "MessagingSystemApp.Api\\wwwroot",
+      "Source": "MessagingSystemApp.Api",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\",
+      "BasePath": "_content/MessagingSystemApp.Api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\Attachments\\JPEG\\0d7e5a34-d94d-4619-bd3e-c4157df8a69e92e379c6-5754-4acc-af56-d61eb753d6ef.jfif",
+      "SourceId": "MessagingSystemApp.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\",
+      "BasePath": "_content/MessagingSystemApp.Api",
+      "RelativePath": "Attachments/JPEG/0d7e5a34-d94d-4619-bd3e-c4157df8a69e92e379c6-5754-4acc-af56-d61eb753d6ef.jfif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Attachments\\JPEG\\0d7e5a34-d94d-4619-bd3e-c4157df8a69e92e379c6-5754-4acc-af56-d61eb753d6ef.jfif"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\Attachments\\PDF\\c09e0cfa-a5d8-49ee-958f-1128f99794a9Orxan Abdullayev CV.pdf",
+      "SourceId": "MessagingSystemApp.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\",
+      "BasePath": "_content/MessagingSystemApp.Api",
+      "RelativePath": "Attachments/PDF/c09e0cfa-a5d8-49ee-958f-1128f99794a9Orxan Abdullayev CV.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Attachments\\PDF\\c09e0cfa-a5d8-49ee-958f-1128f99794a9Orxan Abdullayev CV.pdf"
+    }
+  ]
 }
