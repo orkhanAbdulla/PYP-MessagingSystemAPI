@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221108163435_initialize")]
-    partial class initialize
+    [Migration("20221123224753_addColumnPathToAttachment")]
+    partial class addColumnPathToAttachment
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,10 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.Property<int>("FileType")
                         .HasColumnType("int");
 
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
@@ -60,6 +64,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsChannel")
                         .HasColumnType("bit");
 
@@ -68,6 +75,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(50)
@@ -120,11 +130,14 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ChanelIdId")
+                    b.Property<int>("ConnectionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmployeeId")
                         .IsRequired()
@@ -139,6 +152,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(1500)
@@ -149,7 +165,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChanelIdId");
+                    b.HasIndex("ConnectionId");
 
                     b.HasIndex("EmployeeId");
 
@@ -225,6 +241,12 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenEndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -432,9 +454,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Post", b =>
                 {
-                    b.HasOne("MessagingSystemApp.Domain.Entities.Connection", "ChanelId")
-                        .WithMany()
-                        .HasForeignKey("ChanelIdId")
+                    b.HasOne("MessagingSystemApp.Domain.Entities.Connection", "Connection")
+                        .WithMany("Posts")
+                        .HasForeignKey("ConnectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -450,7 +472,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ChanelId");
+                    b.Navigation("Connection");
 
                     b.Navigation("Employee");
 
@@ -522,6 +544,8 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Connection", b =>
                 {
                     b.Navigation("EmployeeChannels");
+
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Post", b =>

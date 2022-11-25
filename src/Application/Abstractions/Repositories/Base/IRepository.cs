@@ -13,6 +13,7 @@ namespace MessagingSystemApp.Application.Abstracts.Repositories.Base
     {
         public DbSet<TEntity> Table { get; }
         Task AddAsync(TEntity entity);
+        Task AddRangeAsync(IEnumerable<TEntity> entities);
         Task<TEntity?> GetAsync(TKey id);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>>? predicate = null, bool tracking = true, params string[] includes);
         Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, bool tracking = true, params string[] includes);

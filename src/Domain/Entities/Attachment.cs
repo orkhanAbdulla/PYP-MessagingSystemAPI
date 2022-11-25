@@ -13,6 +13,7 @@ namespace MessagingSystemApp.Domain.Entities
         public Post Post { get; set; } = null!;
         public int PostId { get; set; }
         public string FileName { get; set; } = null!;
+        public string Path { get; set; }=null!;
         public FileType FileType { get; set; }
     }
 }

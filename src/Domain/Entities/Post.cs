@@ -15,13 +15,14 @@ namespace MessagingSystemApp.Domain.Entities
             ReplyPosts = new HashSet<Post>();
         }
         public string Message { get; set; } = null!;
-        public Connection ChanelId { get; set; } = null!;
-        public string EmployeeId { get; set; }=null!;
+        public Connection Connection { get; set; } = null!;
+        public int ConnectionId { get; set; }
         public Employee Employee { get; set; }=null!;
+        public string EmployeeId { get; set; } = null!;
         public bool IsEdited { get; set; }
         public bool IsReply { get; set; }
         public Post? ReplyPost { get; set; }
-        public int ReplyPostId { get; set; }
+        public int? ReplyPostId { get; set; }
         public ICollection<Post> ReplyPosts { get; set; }
     }
 }

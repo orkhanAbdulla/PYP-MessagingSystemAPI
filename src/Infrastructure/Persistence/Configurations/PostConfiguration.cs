@@ -16,6 +16,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Configuration
             builder.HasKey(e => e.Id);
             builder.Property(x=>x.Message).HasMaxLength(1500);
             builder.HasOne(x => x.Employee).WithMany(x => x.Posts).HasForeignKey(x => x.EmployeeId);
+            builder.HasOne(x => x.Connection).WithMany(x => x.Posts).HasForeignKey(x => x.ConnectionId);
             builder.HasOne(x => x.ReplyPost).WithMany(x => x.ReplyPosts).HasForeignKey(x => x.ReplyPostId).OnDelete(DeleteBehavior.NoAction);
         }
     }

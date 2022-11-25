@@ -2,6 +2,8 @@
 using MessagingSystemApp.Application.Abstractions.Repositories;
 using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.MailServices;
+using MessagingSystemApp.Application.Abstractions.Services.StorageServices;
+using MessagingSystemApp.Application.Abstractions.Services.StorageServices.Base;
 using MessagingSystemApp.Application.Abstractions.Services.TokenServices;
 using MessagingSystemApp.Application.Abstracts.Common;
 using MessagingSystemApp.Application.Abstracts.Repositories;
@@ -11,6 +13,8 @@ using MessagingSystemApp.Infrastructure.Persistence.Identity;
 using MessagingSystemApp.Infrastructure.Persistence.Interceptors;
 using MessagingSystemApp.Infrastructure.Persistence.Repositories;
 using MessagingSystemApp.Infrastructure.Services.MailServices;
+using MessagingSystemApp.Infrastructure.Services.StorageServices;
+using MessagingSystemApp.Infrastructure.Services.StorageServices.Base;
 using MessagingSystemApp.Infrastructure.Services.TokenServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -52,13 +56,19 @@ namespace MessagingSystemApp.Infrastructure
             serviceCollection.AddScoped<IReactionRepository, ReactionRepository>();
             serviceCollection.AddScoped<IEmployeeChannelRepository, EmployeeChannelRepository>();
             //AddContainerServices
+            serviceCollection.AddScoped<IAuthService, AuthService>();
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IMailService, MailService>();
             serviceCollection.AddScoped<ITokenService, TokenService>();
-            serviceCollection.AddScoped<IAuthService, AuthService>();
+            serviceCollection.AddScoped<IStorageService, StorageService>();
+           
 
 
             return serviceCollection;
+        }
+        public static void AddStorage<T>(this IServiceCollection serviceCollection) where T : Storage, IStorage
+        {
+            serviceCollection.AddScoped<IStorage, T>();
         }
     }
 }

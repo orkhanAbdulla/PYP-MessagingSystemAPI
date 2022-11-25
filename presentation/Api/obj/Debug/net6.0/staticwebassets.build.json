@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "K0CdAjZDHwdVrGf+pOLWrNv2Wq9P2ybHpD7Sb349zhI=",
+  "Hash": "fxAS6qwtNtNtozs4Mw+nsv2ai4FkEhUD90q6A6Wq+dM=",
   "Source": "MessagingSystemApp.Api",
   "BasePath": "_content/MessagingSystemApp.Api",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\Attachments\\JPEG\\0d7e5a34-d94d-4619-bd3e-c4157df8a69e92e379c6-5754-4acc-af56-d61eb753d6ef.jfif",
+      "Identity": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\atachment\\jpeg\\660693f2-7c9f-4185-8767-da926f28eca892e379c6-5754-4acc-af56-d61eb753d6ef.jfif",
       "SourceId": "MessagingSystemApp.Api",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\",
       "BasePath": "_content/MessagingSystemApp.Api",
-      "RelativePath": "Attachments/JPEG/0d7e5a34-d94d-4619-bd3e-c4157df8a69e92e379c6-5754-4acc-af56-d61eb753d6ef.jfif",
+      "RelativePath": "atachment/jpeg/660693f2-7c9f-4185-8767-da926f28eca892e379c6-5754-4acc-af56-d61eb753d6ef.jfif",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -31,24 +31,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Attachments\\JPEG\\0d7e5a34-d94d-4619-bd3e-c4157df8a69e92e379c6-5754-4acc-af56-d61eb753d6ef.jfif"
-    },
-    {
-      "Identity": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\Attachments\\PDF\\c09e0cfa-a5d8-49ee-958f-1128f99794a9Orxan Abdullayev CV.pdf",
-      "SourceId": "MessagingSystemApp.Api",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\",
-      "BasePath": "_content/MessagingSystemApp.Api",
-      "RelativePath": "Attachments/PDF/c09e0cfa-a5d8-49ee-958f-1128f99794a9Orxan Abdullayev CV.pdf",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Attachments\\PDF\\c09e0cfa-a5d8-49ee-958f-1128f99794a9Orxan Abdullayev CV.pdf"
+      "OriginalItemSpec": "wwwroot\\atachment\\jpeg\\660693f2-7c9f-4185-8767-da926f28eca892e379c6-5754-4acc-af56-d61eb753d6ef.jfif"
     }
   ]
 }

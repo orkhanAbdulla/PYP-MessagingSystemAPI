@@ -30,6 +30,8 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Fullname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SignalRId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenEndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -168,7 +170,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     SenderId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ReciverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,13 +222,15 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Message = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
-                    ChanelIdId = table.Column<int>(type: "int", nullable: false),
+                    ConnectionId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsEdited = table.Column<bool>(type: "bit", nullable: false),
                     IsReply = table.Column<bool>(type: "bit", nullable: false),
                     ReplyPostId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -236,8 +242,8 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Posts_Connections_ChanelIdId",
-                        column: x => x.ChanelIdId,
+                        name: "FK_Posts_Connections_ConnectionId",
+                        column: x => x.ConnectionId,
                         principalTable: "Connections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -354,9 +360,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_ChanelIdId",
+                name: "IX_Posts_ConnectionId",
                 table: "Posts",
-                column: "ChanelIdId");
+                column: "ConnectionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_EmployeeId",

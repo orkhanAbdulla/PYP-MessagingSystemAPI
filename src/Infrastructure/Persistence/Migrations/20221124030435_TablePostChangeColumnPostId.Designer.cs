@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221115140728_EmployeeEntityAddColumnReflesh")]
-    partial class EmployeeEntityAddColumnReflesh
+    [Migration("20221124030435_TablePostChangeColumnPostId")]
+    partial class TablePostChangeColumnPostId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,10 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.Property<int>("FileType")
                         .HasColumnType("int");
 
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
@@ -60,6 +64,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsChannel")
                         .HasColumnType("bit");
 
@@ -68,6 +75,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(50)
@@ -120,11 +130,14 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ChanelIdId")
+                    b.Property<int>("ConnectionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmployeeId")
                         .IsRequired()
@@ -139,17 +152,20 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
-                    b.Property<int>("ReplyPostId")
+                    b.Property<int?>("ReplyPostId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChanelIdId");
+                    b.HasIndex("ConnectionId");
 
                     b.HasIndex("EmployeeId");
 
@@ -438,9 +454,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Post", b =>
                 {
-                    b.HasOne("MessagingSystemApp.Domain.Entities.Connection", "ChanelId")
-                        .WithMany()
-                        .HasForeignKey("ChanelIdId")
+                    b.HasOne("MessagingSystemApp.Domain.Entities.Connection", "Connection")
+                        .WithMany("Posts")
+                        .HasForeignKey("ConnectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -453,10 +469,9 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.HasOne("MessagingSystemApp.Domain.Entities.Post", "ReplyPost")
                         .WithMany("ReplyPosts")
                         .HasForeignKey("ReplyPostId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("ChanelId");
+                    b.Navigation("Connection");
 
                     b.Navigation("Employee");
 
@@ -528,6 +543,8 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Connection", b =>
                 {
                     b.Navigation("EmployeeChannels");
+
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Post", b =>

@@ -24,6 +24,10 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Repositories.Base
             EntityEntry newEntity = await Table.AddAsync(entity);
             newEntity.State = EntityState.Added;
         }
+        public async Task AddRangeAsync(IEnumerable<TEntity> entities)
+        {
+            await Table.AddRangeAsync(entities);
+        }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, bool tracking = true, params string[] includes)
         {
