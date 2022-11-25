@@ -11,8 +11,8 @@ namespace MessagingSystemApp.Application.Abstractions.Services.StorageServices.B
 {
     public interface IStorage
     {
-        public Task<string> UploadAsync(string path, IFormFile file);
-        void DeleteAsync(string pathOrContainerName, string fileName);
+        public Task<(string path, string fileName)> UploadAsync(string path, IFormFile file);
+        Task DeleteAsync(string pathOrContainerName, string fileName);
         public FileType GetFileType(string fileType);
         public string FileRename(string FileName);
         public bool IsValidSize(long fileSize, int maxKb);

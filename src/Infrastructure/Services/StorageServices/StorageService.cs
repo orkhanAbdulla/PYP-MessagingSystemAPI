@@ -18,7 +18,7 @@ namespace MessagingSystemApp.Infrastructure.Services.StorageServices
         {
             _storage = storage;
         }
-        public void DeleteAsync(string pathOrContainerName, string fileName)
+        public Task DeleteAsync(string pathOrContainerName, string fileName)
             => _storage.DeleteAsync(pathOrContainerName, fileName);
         public string FileRename(string FileName)
             => _storage.FileRename(FileName);
@@ -26,8 +26,8 @@ namespace MessagingSystemApp.Infrastructure.Services.StorageServices
             =>_storage.GetFileType(fileType);
         public bool IsValidSize(long fileSize, int maxKb)
             => _storage.IsValidSize(fileSize, maxKb);
-        public Task<string> UploadAsync(string path, IFormFile file)
+        public Task<(string path, string fileName)>UploadAsync(string path, IFormFile file)
             =>_storage.UploadAsync(path, file);
-        
+
     }
 }

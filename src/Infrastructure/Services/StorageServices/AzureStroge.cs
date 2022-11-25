@@ -25,23 +25,26 @@ namespace MessagingSystemApp.Infrastructure.Services.StorageServices
             AzureStorageUrl = configuration["AzureStorageUrl"];
         }
 
-        public void DeleteAsync(string ContainerName, string fileName)
+        public async Task DeleteAsync(string ContainerName, string fileName)
         {
-            throw new NotImplementedException();
+            _containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
+            if (_containerClient.GetBlobs().Any(b => b.Name == fileName))
+            {
+                BlobClient blobClient = _containerClient.GetBlobClient(fileName);
+                await blobClient.DeleteAsync();
+            }
         }
 
-        public async Task<string> UploadAsync(string container, IFormFile file)
+        public async Task<(string path,string fileName)> UploadAsync(string container, IFormFile file)
         {
-            var fileFolder = GetFileType(file.ContentType).ToString().ToLower();
             _containerClient = _blobServiceClient.GetBlobContainerClient(container);
             await _containerClient.CreateIfNotExistsAsync();
             await _containerClient.SetAccessPolicyAsync(PublicAccessType.BlobContainer);
             string newFilename = FileRename(file.FileName);
-            string path = fileFolder + "/" + newFilename;
-            BlobClient blogClient=_containerClient.GetBlobClient(path);
+            BlobClient blogClient=_containerClient.GetBlobClient(newFilename);
             await blogClient.UploadAsync(file.OpenReadStream());
-            var rooting = AzureStorageUrl+container+"/"+path;
-            return rooting;
+            string rooting = AzureStorageUrl + container + "/" + newFilename;
+            return (rooting,newFilename);
         }
     }
 }

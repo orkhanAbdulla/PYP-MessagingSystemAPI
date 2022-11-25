@@ -43,7 +43,7 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 builder.Services.AddStorage<AzureStroge>();
-//builder.Services.AddStorage<LocalStorage>();
+////builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

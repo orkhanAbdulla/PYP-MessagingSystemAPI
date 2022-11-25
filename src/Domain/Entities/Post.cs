@@ -13,6 +13,7 @@ namespace MessagingSystemApp.Domain.Entities
         public Post()
         {
             ReplyPosts = new HashSet<Post>();
+            Attachments=new HashSet<Attachment>();
         }
         public string Message { get; set; } = null!;
         public Connection Connection { get; set; } = null!;
@@ -23,6 +24,7 @@ namespace MessagingSystemApp.Domain.Entities
         public bool IsReply { get; set; }
         public Post? ReplyPost { get; set; }
         public int? ReplyPostId { get; set; }
+        public ICollection<Attachment> Attachments { get; set; }
         public ICollection<Post> ReplyPosts { get; set; }
     }
 }

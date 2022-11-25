@@ -79,10 +79,8 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                     if (!isValidSize) throw new FileFormatException("File must be less than 10 kb");
                     var fileType = _storageService.GetFileType(file.ContentType);
                     if (fileType == 0) throw new FileFormatException($"can't upload {file.ContentType} file");
-                    var fileName = _storageService.FileRename(file.FileName);
-                    var filePath = await _storageService.UploadAsync("atachment", file);
-
-                    attachmentDto.Add(new AttachmentDto { FileName = fileName, FileType = fileType, Path = filePath, PostId = post.Id });
+                    var result = await _storageService.UploadAsync("attachments", file);
+                    attachmentDto.Add(new AttachmentDto { FileName = result.fileName, FileType = fileType, Path = result.path, PostId = post.Id });
                 }
                 IEnumerable<Attachment> attachments = _mapper.Map<IEnumerable<Attachment>>(attachmentDto);
                 await _attachmentRepository.AddRangeAsync(attachments);

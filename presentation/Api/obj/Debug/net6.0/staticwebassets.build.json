@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "fxAS6qwtNtNtozs4Mw+nsv2ai4FkEhUD90q6A6Wq+dM=",
+  "Hash": "BYbjDH8JX1onDIS+G25RCkWKhz0wSelIxiMRmyaUbxQ=",
   "Source": "MessagingSystemApp.Api",
   "BasePath": "_content/MessagingSystemApp.Api",
   "Mode": "Default",
@@ -15,23 +15,5 @@
       "Pattern": "**"
     }
   ],
-  "Assets": [
-    {
-      "Identity": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\atachment\\jpeg\\660693f2-7c9f-4185-8767-da926f28eca892e379c6-5754-4acc-af56-d61eb753d6ef.jfif",
-      "SourceId": "MessagingSystemApp.Api",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\presentation\\Api\\wwwroot\\",
-      "BasePath": "_content/MessagingSystemApp.Api",
-      "RelativePath": "atachment/jpeg/660693f2-7c9f-4185-8767-da926f28eca892e379c6-5754-4acc-af56-d61eb753d6ef.jfif",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\atachment\\jpeg\\660693f2-7c9f-4185-8767-da926f28eca892e379c6-5754-4acc-af56-d61eb753d6ef.jfif"
-    }
-  ]
+  "Assets": []
 }

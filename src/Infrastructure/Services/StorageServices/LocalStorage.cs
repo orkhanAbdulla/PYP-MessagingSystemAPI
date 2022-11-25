@@ -13,15 +13,18 @@ namespace MessagingSystemApp.Infrastructure.Services.StorageServices
 {
     public class LocalStorage : Storage, ILocalStorage
     {
-        public void DeleteAsync(string path, string fileName)
+        public async Task DeleteAsync(string path, string fileName)
         {
-            if (File.Exists(path)) File.Delete(path);
+            string DeleteFile = Path.Combine(Directory.GetCurrentDirectory() + $"/wwwroot/{path}/{fileName}");
+            if (File.Exists(DeleteFile))
+            {
+                File.Delete(DeleteFile);
+            }
         }
-        public async Task<string> UploadAsync(string path, IFormFile file)
+        public async Task<(string path, string fileName)> UploadAsync(string path, IFormFile file)
         {
-            var fileFolder = GetFileType(file.ContentType).ToString().ToLower();
             string newFilename = FileRename(file.FileName);
-            string uploadPath = Path.Combine(Directory.GetCurrentDirectory() + $"/wwwroot/{path}", fileFolder);
+            string uploadPath = Path.Combine(Directory.GetCurrentDirectory() + $"/wwwroot/{path}");
             if (!Directory.Exists(uploadPath))
                 Directory.CreateDirectory(uploadPath);
             string rooting = Path.Combine(uploadPath, newFilename);
@@ -29,7 +32,7 @@ namespace MessagingSystemApp.Infrastructure.Services.StorageServices
             {
                await file.CopyToAsync(stream);
             }
-            return rooting;
+            return (rooting,newFilename);
         }   
     }
 }

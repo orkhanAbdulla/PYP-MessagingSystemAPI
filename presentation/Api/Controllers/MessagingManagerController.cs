@@ -9,8 +9,18 @@ namespace MessagingSystemApp.Api.Controllers
     [ApiController]
     public class MessagingManagerController : ApiBaseController
     {
-        [HttpPost("[action]")]
+        [HttpPost("Post/[action]")]
         public async Task<IActionResult> Create([FromForm] CreatePostCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPut("Post/[action]")]
+        public async Task<IActionResult> Update([FromForm] UpdatePostCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpDelete("Posr/[action]")]
+        public async Task<IActionResult> Delete([FromForm] DeletePostCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }
