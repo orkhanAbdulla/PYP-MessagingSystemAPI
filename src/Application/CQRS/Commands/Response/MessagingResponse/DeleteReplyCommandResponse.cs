@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Application.CQRS.Commands.Response.MessagingResponse
 {
-    public class UpdatePostCommandResponse
+    public class DeleteReplyCommandResponse
     {
-        public int PostId { get; set; }
+        public int Id { get; set; }
     }
 }

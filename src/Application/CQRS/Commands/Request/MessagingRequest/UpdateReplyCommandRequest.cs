@@ -1,8 +1,5 @@
 ﻿using MediatR;
-using MessagingSystemApp.Application.Common.Mappings;
 using MessagingSystemApp.Application.CQRS.Commands.Response.MessagingResponse;
-using MessagingSystemApp.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Application.CQRS.Commands.Request.MessagingRequest
 {
-    public class CreatePostCommandRequest:IRequest<ICollection<CreatePostCommandResponse>>,IMapFrom<Post>
+    public class UpdateReplyCommandRequest:IRequest<UpdateReplyCommandResponse>
     {
+        public int Id { get; set; }
         public int ConnectionId { get; set; }
         public string EmployeeId { get; set; } = null!;
         public string Message { get; set; } = null!;
-        public IFormFileCollection? FormCollection { get; set; }
+
     }
 }

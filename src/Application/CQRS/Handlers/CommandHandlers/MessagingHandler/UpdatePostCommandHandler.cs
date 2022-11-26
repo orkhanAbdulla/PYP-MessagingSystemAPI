@@ -19,44 +19,28 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
 {
     public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommandRequest, UpdatePostCommandResponse>
     {
-        private readonly IConnectionRepository _connectionRepository;
-        private readonly IEmployeeChannelRepository _employeeChannelRepository;
         private readonly IPostRepository _postRepository;
 
-        public UpdatePostCommandHandler(IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IPostRepository postRepository)
+        public UpdatePostCommandHandler(IPostRepository postRepository)
         {
-            _connectionRepository = connectionRepository;
-            _employeeChannelRepository = employeeChannelRepository;
             _postRepository = postRepository;
         }
 
         public async Task<UpdatePostCommandResponse> Handle(UpdatePostCommandRequest request, CancellationToken cancellationToken)
         {
-            Post post = await _postRepository.GetAsync(x => x.Id == request.Id,true,nameof(Connection));
+            Post post = await _postRepository.GetAsync(x => x.Id == request.Id &&x.IsReply==false,true,nameof(Connection));
             if (post == null) throw new NotFoundException(nameof(Post), request.Id);
-            var isExsistPostByUser = await _postRepository.IsExistAsync(x => x.EmployeeId == request.EmployeeId);
-            if (!isExsistPostByUser) throw new BadRequestException
-                        ($"The PostId:\"{post.Id}\"is not created by UserId:\"{request.Id}\"");
-            var isExsistUserInConnection = true;
-            if (post.Connection.IsChannel == true)
-            {
-                isExsistUserInConnection = await _employeeChannelRepository.
-                    IsExistAsync(x => x.ChannelId == request.ConnectionId && x.EmployeeId == request.EmployeeId);
-                if (!isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{request.EmployeeId}\"is not in Connection:\"{request.ConnectionId}\"");
-            }
-            if (post.Connection.IsPrivate == true)
-            {
-                isExsistUserInConnection = await _connectionRepository.
-                 IsExistAsync(x => x.SenderId == request.EmployeeId && x.ReciverId == request.EmployeeId);
-                if (isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{request.EmployeeId}\"is not in Connection:\"{request.ConnectionId}\"");
-            }
+            var result = post.EmployeeId == request.EmployeeId;
+            if (!result) throw new BadRequestException
+                        ($"The PostId:\"{post.Id}\"is not created by EmployeeId:\"{request.EmployeeId}\"");
+            result = post.Connection.Id != request.ConnectionId;
+            if (result) throw new BadRequestException
+                        ($"The PostId:\"{post.Id}\"is not created in ConnectionId:\"{request.ConnectionId}\"");
             post.Message = request.Message;
-            post.IsReply = true;
+            post.IsEdited = true;
             _postRepository.Update(post);
             await _postRepository.SaveChangesAsync(cancellationToken);
-            return new UpdatePostCommandResponse();
+            return new UpdatePostCommandResponse() { PostId=post.Id};
         }
     }
 }

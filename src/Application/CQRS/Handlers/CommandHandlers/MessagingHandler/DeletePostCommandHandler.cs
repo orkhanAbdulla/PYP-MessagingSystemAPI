@@ -16,16 +16,12 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
 {
     public class DeletePostCommandHandler : IRequestHandler<DeletePostCommandRequest, DeletePostCommandResponse>
     {
-        private readonly IConnectionRepository _connectionRepository;
-        private readonly IEmployeeChannelRepository _employeeChannelRepository;
         private readonly IPostRepository _postRepository;
         private readonly IAttachmentRepository _attachmentRepository;
         private readonly IStorage _storage;
 
-        public DeletePostCommandHandler(IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IPostRepository postRepository, IStorage storage, IAttachmentRepository attachmentRepository)
+        public DeletePostCommandHandler(IPostRepository postRepository, IStorage storage, IAttachmentRepository attachmentRepository)
         {
-            _connectionRepository = connectionRepository;
-            _employeeChannelRepository = employeeChannelRepository;
             _postRepository = postRepository;
             _storage = storage;
             _attachmentRepository = attachmentRepository;
@@ -35,23 +31,12 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
         {
             Post post = await _postRepository.GetAsync(x => x.Id == request.Id, true, nameof(Connection));
             if (post == null) throw new NotFoundException(nameof(Post), request.Id);
-            if (post.EmployeeId!=request.EmployeeId) throw new BadRequestException
+            var result = post.EmployeeId == request.EmployeeId;
+            if (!result) throw new BadRequestException
                         ($"The PostId:\"{post.Id}\"is not created by EmployeeId:\"{request.EmployeeId}\"");
-            var isExsistUserInConnection = true;
-            if (post.Connection.IsChannel == true)
-            {
-                isExsistUserInConnection = await _employeeChannelRepository.
-                    IsExistAsync(x => x.ChannelId == request.ConnectionId && x.EmployeeId == request.EmployeeId);
-                if (!isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{request.EmployeeId}\"is not in Connection:\"{request.ConnectionId}\"");
-            }
-            if (post.Connection.IsPrivate == true)
-            {
-                isExsistUserInConnection = await _connectionRepository.
-                 IsExistAsync(x => x.SenderId == request.EmployeeId && x.ReciverId == request.EmployeeId);
-                if (isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{request.EmployeeId}\"is not in Connection:\"{request.ConnectionId}\"");
-            }
+            result = post.Connection.Id == request.ConnectionId;
+            if (!result) throw new BadRequestException
+                        ($"The PostId:\"{post.Id}\"is not created in ConnectionId:\"{request.ConnectionId}\"");
             IEnumerable<Attachment> attachments = await _attachmentRepository.GetAllAsync(x => x.PostId == post.Id);
             if (attachments!=null)
             {

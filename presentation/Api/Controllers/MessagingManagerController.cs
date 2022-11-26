@@ -19,8 +19,23 @@ namespace MessagingSystemApp.Api.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
-        [HttpDelete("Posr/[action]")]
+        [HttpDelete("Post/[action]")]
         public async Task<IActionResult> Delete([FromForm] DeletePostCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPost("Post/[action]")]
+        public async Task<IActionResult> CreateReply([FromForm] CreateReplyCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPut("Post/[action]")]
+        public async Task<IActionResult> UpdateReply([FromForm] UpdateReplyCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpDelete("Post/[action]")]
+        public async Task<IActionResult> DeleteReply([FromForm] DeleteReplyCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }

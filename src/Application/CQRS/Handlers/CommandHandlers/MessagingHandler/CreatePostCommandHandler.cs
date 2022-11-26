@@ -47,26 +47,26 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
         {
             Connection connection = await _connectionRepository.GetAsync(x => x.Id == request.ConnectionId);
             if (connection == null) throw new NotFoundException(nameof(Connection), request.ConnectionId);
-            Employee employee = await _userService.GetUserAsync(x => x.UserName == request.UserName);
-            if (employee == null) throw new NotFoundException(nameof(Employee), request.UserName);
+            bool isExsist = await _userService.IsExistAsync(x => x.Id == request.EmployeeId);
+            if (!isExsist) throw new NotFoundException(nameof(Employee), request.EmployeeId);
             if (request.FormCollection == null && request.Message == null) throw new BadRequestException();
             var isExsistUserInConnection = true;
             if (connection.IsChannel == true)
             {
                 isExsistUserInConnection = await _employeeChannelRepository.
-                    IsExistAsync(x => x.ChannelId == request.ConnectionId && x.EmployeeId == employee.Id);
+                    IsExistAsync(x => x.ChannelId == request.ConnectionId && x.EmployeeId == request.EmployeeId);
                 if (!isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{employee.Id}\"is not in Connection:\"{request.ConnectionId}\"");
+                        ($"The EmployeeId:\"{request.EmployeeId}\"is not in Connection:\"{request.ConnectionId}\"");
             }
             if (connection.IsPrivate == true)
             {
                 isExsistUserInConnection = await _connectionRepository.
-                 IsExistAsync(x => x.SenderId == employee.Id && x.ReciverId == employee.Id);
+                 IsExistAsync(x => x.SenderId == request.EmployeeId && x.ReciverId == request.EmployeeId);
                 if (isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{employee.Id}\"is not in Connection:\"{request.ConnectionId}\"");
+                        ($"The EmployeeId:\"{request.EmployeeId}\"is not in Connection:\"{request.ConnectionId}\"");
             }
             Post post = _mapper.Map<Post>(request);
-            post.EmployeeId = employee.Id;
+            post.EmployeeId = request.EmployeeId;
             await _postRepository.AddAsync(post);
             await _postRepository.SaveChangesAsync(cancellationToken);
             // File Upload
