@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Application.Common.Dtos.AttachmentDtos
 {
-    public class AttachmentDto: IMapFrom<Attachment>
+    public class AttachmentPostDto: IMapFrom<Attachment>
     {
         public string FileName { get; set; } = null!;
         public FileType FileType { get; set; }

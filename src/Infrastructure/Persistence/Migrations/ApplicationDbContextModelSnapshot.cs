@@ -180,8 +180,20 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Emoji")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -408,7 +420,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Attachment", b =>
                 {
                     b.HasOne("MessagingSystemApp.Domain.Entities.Post", "Post")
-                        .WithMany()
+                        .WithMany("Attachments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -467,7 +479,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
                     b.HasOne("MessagingSystemApp.Domain.Entities.Post", "ReplyPost")
                         .WithMany("ReplyPosts")
                         .HasForeignKey("ReplyPostId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Connection");
 
@@ -479,7 +491,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Reaction", b =>
                 {
                     b.HasOne("MessagingSystemApp.Domain.Entities.Post", "Post")
-                        .WithMany()
+                        .WithMany("Reactions")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -547,6 +559,10 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MessagingSystemApp.Domain.Entities.Post", b =>
                 {
+                    b.Navigation("Attachments");
+
+                    b.Navigation("Reactions");
+
                     b.Navigation("ReplyPosts");
                 });
 

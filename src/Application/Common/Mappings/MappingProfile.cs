@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
+using MessagingSystemApp.Application.Common.Dtos.AttachmentDtos;
+using MessagingSystemApp.Application.Common.Dtos.PostDtos;
+using MessagingSystemApp.Application.Common.Dtos.ReactionDtos;
 using MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest;
+using MessagingSystemApp.Application.CQRS.Queries.Response.MessagingResponse;
 using MessagingSystemApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,8 +26,12 @@ namespace MessagingSystemApp.Application.Common.Mappings
     {
         public MappingProfile()
         {
+            CreateMap<Post, GetPostByConnectionIdQueryResponse>();
+            CreateMap<Attachment, AttachmentGetDto>();
+            CreateMap<Post, ReplyPostGetDto>();
+            CreateMap<Reaction, ReactionGetDto>();
+            CreateMap<Post, GetRepliesByPostIdQueryResponse>();
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
-            //CreateMap<Connection, CreateConnectionCommandRequest>().ForMember(dest => dest.ChannelName, opt => opt.MapFrom(src => src.Name));
         }
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {

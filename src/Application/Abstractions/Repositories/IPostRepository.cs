@@ -10,5 +10,7 @@ namespace MessagingSystemApp.Application.Abstracts.Repositories
 {
     public interface IPostRepository:IRepository<Post,int>
     {
+        public Task<IEnumerable<Post>> GetPostByConnectionId(int ConnectionId, int RepliesCount, int ReactionsCount);
+        public Task<IEnumerable<Post>> GetRepliesByPostId(int postId, int ReactionsCount);
     }
 }

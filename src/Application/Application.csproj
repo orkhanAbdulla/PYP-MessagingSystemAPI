@@ -18,9 +18,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\Queries\Request\EmployeeRequest\" />
-    <Folder Include="CQRS\Queries\Response\EmployeeResponse\" />
-  </ItemGroup>
-
 </Project>

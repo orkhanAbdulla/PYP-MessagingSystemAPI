@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Domain.Entities
 {
-    public class Reaction:BaseEntity<int>
+    public class Reaction:BaseAuditableEntity
     {
         public Emoji Emoji { get; set; }
         public Post Post { get; set; } = null!;

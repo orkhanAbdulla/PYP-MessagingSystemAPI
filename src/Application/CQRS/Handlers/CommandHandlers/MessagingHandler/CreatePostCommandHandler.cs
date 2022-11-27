@@ -70,7 +70,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
             await _postRepository.AddAsync(post);
             await _postRepository.SaveChangesAsync(cancellationToken);
             // File Upload
-            List<AttachmentDto> attachmentDto = new List<AttachmentDto>();
+            List<AttachmentPostDto> attachmentDto = new List<AttachmentPostDto>();
             if (request.FormCollection != null)
             {
                 foreach (var file in request.FormCollection)
@@ -80,7 +80,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                     var fileType = _storageService.GetFileType(file.ContentType);
                     if (fileType == 0) throw new FileFormatException($"can't upload {file.ContentType} file");
                     var result = await _storageService.UploadAsync("attachments", file);
-                    attachmentDto.Add(new AttachmentDto { FileName = result.fileName, FileType = fileType, Path = result.path, PostId = post.Id });
+                    attachmentDto.Add(new AttachmentPostDto { FileName = result.fileName, FileType = fileType, Path = result.path, PostId = post.Id });
                 }
                 IEnumerable<Attachment> attachments = _mapper.Map<IEnumerable<Attachment>>(attachmentDto);
                 await _attachmentRepository.AddRangeAsync(attachments);

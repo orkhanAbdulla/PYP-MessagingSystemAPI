@@ -1,7 +1,10 @@
 ﻿using MessagingSystemApp.Application.CQRS.Commands.Request.MessagingRequest;
+using MessagingSystemApp.Application.CQRS.Queries.Request.MessagingRequest;
+using MessagingSystemApp.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace MessagingSystemApp.Api.Controllers
 {
@@ -9,6 +12,16 @@ namespace MessagingSystemApp.Api.Controllers
     [ApiController]
     public class MessagingManagerController : ApiBaseController
     {
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetPostsByConnectionId([FromQuery] GetPostByConnectionIdQueryRequest query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetRepliesByPostId([FromQuery] GetRepliesByPostIdQueryRequest query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
         [HttpPost("Post/[action]")]
         public async Task<IActionResult> Create([FromForm] CreatePostCommandRequest command)
         {
@@ -36,6 +49,11 @@ namespace MessagingSystemApp.Api.Controllers
         }
         [HttpDelete("Post/[action]")]
         public async Task<IActionResult> DeleteReply([FromForm] DeleteReplyCommandRequest command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPost("Post/[action]")]
+        public async Task<IActionResult> Reaction([FromForm] ReactionCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }

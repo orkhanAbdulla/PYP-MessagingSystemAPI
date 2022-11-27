@@ -11,5 +11,9 @@ namespace MessagingSystemApp.Domain.Enums
         Completed=1,
         Look,
         NicelyDone,
+        Smile,
+        Joy,
+        Kissing_Heart,
+        Chek
     }
 }
