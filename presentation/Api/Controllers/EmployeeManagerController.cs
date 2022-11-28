@@ -46,16 +46,10 @@ namespace MessagingSystemApp.Api.Controllers
             return Ok(await Mediator.Send(command));
         }
         [HttpPost("[action]")]
-        [Authorize(AuthenticationSchemes = "Admin")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
-        }
-        [HttpGet("")]
-        [Authorize(AuthenticationSchemes = "Admin")]
-        public IActionResult Test()
-        {
-            return Ok("okey");
         }
 
     }

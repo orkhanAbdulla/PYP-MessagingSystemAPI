@@ -10,6 +10,7 @@ namespace MessagingSystemApp.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MessagingManagerController : ApiBaseController
     {
         [HttpGet("[action]")]

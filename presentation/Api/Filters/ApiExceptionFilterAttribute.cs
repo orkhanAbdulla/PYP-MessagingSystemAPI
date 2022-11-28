@@ -1,4 +1,5 @@
-﻿using MessagingSystemApp.Application.Common.Exceptions;
+﻿using MessagingSystemApp.Application.Common.Behaviorus;
+using MessagingSystemApp.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -78,7 +79,7 @@ namespace MessagingSystemApp.Api.Filters
                 Status = StatusCodes.Status401Unauthorized,
                 Title = "Unauthorized",
                 Type = "https://tools.ietf.org/html/rfc7235#section-3.1",
-                Detail=context.Exception.Message
+                Detail=context.Exception.Message,
             };
 
             context.Result = new ObjectResult(details)

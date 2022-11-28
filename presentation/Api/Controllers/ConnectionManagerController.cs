@@ -1,5 +1,6 @@
 ﻿using MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest;
 using MessagingSystemApp.Application.CQRS.Queries.Request.ConnectionRequest;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace MessagingSystemApp.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ConnectionManagerController : ApiBaseController
     {
         [HttpPost("[action]")]
