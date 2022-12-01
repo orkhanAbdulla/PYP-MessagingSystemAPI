@@ -32,7 +32,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeC
             if (!result.Succeeded) throw new UnauthorizedAccessException("The email or password is incorrect");
             var token = _tokenService.GenerateAccessToken(employee, 3);
             await _userService.UpdateRefreshToken(employee, token.RefreshToken, token.Expiration, 2);
-            return new() { Token = token };
+            return new() { Token = token,UserName=employee.UserName };
         }
     }
 }

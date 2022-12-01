@@ -1,11 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
+using MessagingSystemApp.Application.Common.Exceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ValidationException = MessagingSystemApp.Application.Common.Exceptions.ValidationException;
 
 namespace MessagingSystemApp.Application.Common.Behaviorus
 {

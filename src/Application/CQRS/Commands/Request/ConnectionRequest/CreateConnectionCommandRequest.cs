@@ -15,7 +15,6 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest
 {
     public class CreateConnectionCommandRequest:IRequest<CreateConnectionCommandResponse>
     {
-        public string UserName { get; set; } = null!;
         public string? ReciverUserName { get; set; }
         public bool IsChannel { get; set; }
         public string? ChannelName { get; set; }

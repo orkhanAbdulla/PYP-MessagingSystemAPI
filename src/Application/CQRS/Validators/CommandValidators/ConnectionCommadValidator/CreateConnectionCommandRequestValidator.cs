@@ -17,7 +17,6 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.Conne
     {
         public CreateConnectionCommandRequestValidator()
         {
-            RuleFor(x => x.UserName).NotEmpty().NotNull();
             RuleFor(x => x.ChannelName).MaximumLength(50);
         }
     }

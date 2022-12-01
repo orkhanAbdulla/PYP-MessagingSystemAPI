@@ -1,0 +1,35 @@
+﻿@model List<GetPostByConnectionIdQueryResponse>
+@{
+    string username = Context.Session.GetString("UserName");
+}
+<ul class="m-b-0" style="height:600px;box-sizing:border-box;">
+    @foreach (var item in Model)
+    {
+        <li class="clearfix" data-id="{@item.Id}">
+            @if (username != item.CreatedBy){
+                <div class="message-data text-right">
+                    <span class="message-data-time">@item.CreatedBy
+                    </span>
+                    <span class="message-data-time" style="font-size:10px">
+                        @item.CreatedAt.ToString("MMMM dd H:mm")
+                    </span>
+                </div>
+                <div class="message other-message float-right">@item.Message</div>
+            }
+            else{
+                <div class="message-data">
+                    <span class="message-data-time">
+                        Me 
+                    </span>
+                    <span class="message-data-time" style="font-size:10px">
+                        @item.CreatedAt.ToString("MMMM dd H:mm")
+                    </span>
+                  </div>
+                  
+                <div class="message my-message">@item.Message</div>
+            }
+          
+        </li>
+    }
+
+</ul>

@@ -8,6 +8,7 @@ using MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.ConnectionResponse;
 using MessagingSystemApp.Domain.Entities;
 using MessagingSystemApp.Domain.Identity;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,18 +24,21 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Connectio
         private readonly IUserService _userService;
         private readonly IConnectionRepository _connectionRepository;
         private readonly IEmployeeChannelRepository _employeeChannelRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CreateConnectionCommandHandler(IUserService userService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository)
+        public CreateConnectionCommandHandler(IUserService userService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userService = userService;
             _connectionRepository = connectionRepository;
             _employeeChannelRepository = employeeChannelRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         async Task<CreateConnectionCommandResponse> IRequestHandler<CreateConnectionCommandRequest, CreateConnectionCommandResponse>.Handle(CreateConnectionCommandRequest request, CancellationToken cancellationToken)
         {
-            Employee employee = await _userService.GetUserAsync(x => x.UserName == request.UserName);
-            if (employee == null) throw new NotFoundException(nameof(Employee), request.UserName);
+            string userName = _httpContextAccessor.HttpContext.User?.Identity?.Name ?? throw new BadRequestException();
+            Employee employee = await _userService.GetUserAsync(x => x.UserName == userName);
+            if (employee == null) throw new NotFoundException(nameof(Employee),userName);
             if (request.IsChannel && request.ChannelName!=null)
             {
                 bool IsExistChanelName = await _employeeChannelRepository.

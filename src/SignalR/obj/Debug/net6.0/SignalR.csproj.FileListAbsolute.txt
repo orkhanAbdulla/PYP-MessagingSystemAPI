@@ -10,3 +10,8 @@ C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\Messagin
 C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\refint\MessagingSystemApp.SignalR.dll
 C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\MessagingSystemApp.SignalR.pdb
 C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\ref\MessagingSystemApp.SignalR.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\bin\Debug\net6.0\MessagingSystemApp.Application.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\bin\Debug\net6.0\MessagingSystemApp.Domain.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\bin\Debug\net6.0\MessagingSystemApp.Application.pdb
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\bin\Debug\net6.0\MessagingSystemApp.Domain.pdb
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\src\SignalR\obj\Debug\net6.0\SignalR.csproj.CopyComplete

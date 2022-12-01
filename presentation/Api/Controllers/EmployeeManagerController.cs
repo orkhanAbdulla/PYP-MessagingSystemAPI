@@ -21,7 +21,7 @@ namespace MessagingSystemApp.Api.Controllers
             return Ok(await Mediator.Send(command));
         }
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login([FromForm] LoginEmployeeCommandRequest command)
+        public async Task<IActionResult> Login([FromBody] LoginEmployeeCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
         }

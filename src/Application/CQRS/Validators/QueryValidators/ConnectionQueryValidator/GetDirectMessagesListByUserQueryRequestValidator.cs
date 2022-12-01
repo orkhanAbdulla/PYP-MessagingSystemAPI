@@ -12,7 +12,7 @@ namespace MessagingSystemApp.Application.CQRS.Validators.QueryValidators.Connect
     {
         public GetDirectMessagesListByUserQueryRequestValidator()
         {
-            RuleFor(x => x.UserName).NotEmpty().NotNull();
+          
         }
     }
 }

@@ -34,9 +34,9 @@ namespace MessagingSystemApp.Api.Controllers
             return Ok(await Mediator.Send(command));
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetChannelListByUser([FromQuery] GetChannelListByUserQueryRequest query)
+        public async Task<IActionResult> GetChannelListByUser()
         {
-            return Ok(await Mediator.Send(query));
+            return Ok(await Mediator.Send(new GetChannelListByUserQueryRequest()));
         }
         [HttpGet("[action]")]
         public async Task<IActionResult>GetDirectMessagesListByUser([FromQuery]GetDirectMessagesListByUserQueryRequest query)

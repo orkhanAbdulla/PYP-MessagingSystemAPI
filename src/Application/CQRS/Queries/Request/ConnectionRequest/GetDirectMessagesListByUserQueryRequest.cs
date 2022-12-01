@@ -11,6 +11,6 @@ namespace MessagingSystemApp.Application.CQRS.Queries.Request.ConnectionRequest
 {
     public class GetDirectMessagesListByUserQueryRequest:IRequest<IEnumerable<GetDirectMessagesListByUserQueryRespose>>
     {
-        public string UserName { get; set; } = null!;
+       
     }
 }

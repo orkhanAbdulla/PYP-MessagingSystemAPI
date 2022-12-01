@@ -44,6 +44,7 @@ builder.Services.AddSwaggerGen(opt =>
 });
 builder.Services.AddSignalR();
 builder.Services.AddStorage<AzureStroge>();
+builder.Services.AddCors();
 ////builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
@@ -78,6 +79,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(x => x
+.AllowAnyMethod()
+.AllowAnyHeader()
+.SetIsOriginAllowed(origin => true) // allow any origin
+.AllowCredentials()); // allow credentials
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,0 +1,123 @@
+﻿@model ConnectionViewModel
+@{
+    var Channels = Model.Channels;
+    var DirectMessages = Model.DirectMessages;
+    var token = Context.Session.GetString("Token");
+}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/chat.css">
+
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card chat-app">
+                <input type="hidden" id="token" value="@Context.Session.GetString("Token")" />
+                <input type="hidden" id="userName" value="@Context.Session.GetString("UserName")" />
+                <div id="plist" class="people-list">
+                    @if (Channels != null && Channels.Count != 0)
+                        {
+                            <h6 class="text-secondary">Channels</h6>
+                            <ul class="list-unstyled chat-list mt-2 mb-0">
+                            @foreach (var Channel in Channels)
+                            {
+                                <li onclick="GetPostByConnectionId(@Channel.Id)" class="clearfix">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                                    <div class="about">
+                                        <div class="name">@Channel.Name</div>
+                                        <div class="status">@Channel.CreatedAt.ToString("MMMM dd H:mm")</div>
+                                    </div>
+                                </li>
+                                
+                            }
+                        </ul>
+                        }
+                        @if(DirectMessages!=null){
+                        <h6 class="text-secondary">Direct Messages</h6>
+                        @foreach (var DirectMessage in DirectMessages)
+                        {
+                            <ul class="list-unstyled chat-list mt-2 mb-0">
+                              <li onclick="GetPostByConnectionId(@DirectMessage.Id)" class="clearfix">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                                    <div class="about">
+                                        <div class="name">
+                                            @if (DirectMessage.SenderName == Context.Session.GetString("UserName"))
+                                            {
+                                                @DirectMessage.ReciverName
+                                            }
+                                            else
+                                            {
+                                                @DirectMessage.SenderName
+                                            }
+                                        </div>
+                                        <div class="status"> <i class="fa fa-circle offline"></i>online</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        }   
+                        }
+                </div>
+                <div class="chat">
+                    <div class="chat-header clearfix">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                                </a>
+                                <div class="chat-about">
+                                    <h6 class="m-b-0">
+                                        @if (Channels!=null && Channels.Count!=0)
+                                        {
+                                            @Channels[0].Name
+                                        }
+                                        else if(DirectMessages != null && DirectMessages.Count != 0)
+                                        {
+                                            @if (DirectMessages[0].SenderName == Context.Session.GetString("UserName"))
+                                            {
+                                                @DirectMessages[0].ReciverName
+                                            }
+                                            else
+                                            {
+                                                @DirectMessages[0].SenderName
+                                            }
+                                        }
+                                        </h6>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 hidden-sm text-right">
+                                <a href="javascript:void(0);" class="btn btn-outline-secondary"><i class="fa fa-camera"></i></a>
+                                <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="fa fa-image"></i></a>
+                                <a href="javascript:void(0);" class="btn btn-outline-info"><i class="fa fa-cogs"></i></a>
+                                <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="fa fa-question"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-history">
+                        @if (Channels != null && Channels.Count != 0)
+                        {
+                            @await Component.InvokeAsync("Posts",Channels[0].Id)
+                        }
+                        else if (DirectMessages != null && DirectMessages.Count != 0)
+                        {
+                            @await Component.InvokeAsync("Posts",DirectMessages[0].Id)
+                        }
+                        else{
+
+                        }
+                       
+                    </div>
+                    <div class="chat-message clearfix">
+                        <div class="input-group mb-0">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-send"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Enter text here...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/site.js"></script>

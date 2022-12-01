@@ -3,6 +3,7 @@ using MessagingSystemApp.Application.Common.Dtos.AttachmentDtos;
 using MessagingSystemApp.Application.Common.Dtos.PostDtos;
 using MessagingSystemApp.Application.Common.Dtos.ReactionDtos;
 using MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest;
+using MessagingSystemApp.Application.CQRS.Queries.Response.ConnectionResponse;
 using MessagingSystemApp.Application.CQRS.Queries.Response.MessagingResponse;
 using MessagingSystemApp.Domain.Entities;
 using System;
@@ -31,6 +32,7 @@ namespace MessagingSystemApp.Application.Common.Mappings
             CreateMap<Post, ReplyPostGetDto>();
             CreateMap<Reaction, ReactionGetDto>();
             CreateMap<Post, GetRepliesByPostIdQueryResponse>();
+            CreateMap<Connection, GetDirectMessagesListByUserQueryRespose>().ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.UserName)).ForMember(dest => dest.ReciverName, opt => opt.MapFrom(src => src.Reciver.UserName));
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         }
         private void ApplyMappingsFromAssembly(Assembly assembly)

@@ -10,6 +10,5 @@ namespace MessagingSystemApp.Application.CQRS.Queries.Request.ConnectionRequest
 {
     public class GetChannelListByUserQueryRequest:IRequest<IEnumerable<GetChannelListByUserQueryResponse>>
     {
-        public string UserName { get; set; } = null!;
     }
 }

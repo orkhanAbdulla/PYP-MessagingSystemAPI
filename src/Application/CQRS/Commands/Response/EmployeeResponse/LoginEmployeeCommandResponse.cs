@@ -10,5 +10,6 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse
     public class LoginEmployeeCommandResponse
     {
         public Token Token { get; set; } = null!;
+        public string UserName { get; set; }=null!;
     }
 }

@@ -12,7 +12,7 @@ namespace MessagingSystemApp.Application.CQRS.Validators.QueryValidators.Connect
     {
         public GetChannelListByUserQueryRequestValidator()
         {
-            RuleFor(x => x.UserName).NotNull().NotEmpty();
+           
         }
     }
 }
