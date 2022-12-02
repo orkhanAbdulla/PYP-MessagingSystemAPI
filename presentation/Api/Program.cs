@@ -7,6 +7,8 @@ using MessagingSystemApp.Infrastructure.SignalR.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SendGrid.Helpers.Mail;
+using System.Data.Common;
 using System.Security.Claims;
 using System.Text;
 
@@ -42,7 +44,6 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
-builder.Services.AddSignalR();
 builder.Services.AddStorage<AzureStroge>();
 builder.Services.AddCors();
 ////builder.Services.AddStorage<LocalStorage>();
@@ -68,9 +69,25 @@ builder.Services.AddAuthentication(opt =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"])),
             LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => expires != null ? expires > DateTime.UtcNow : false,
             NameClaimType = ClaimTypes.UserData,
+            
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    (path.StartsWithSegments("/chatHub")))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
         };
     });
-
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

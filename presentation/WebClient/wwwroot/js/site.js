@@ -1,4 +1,5 @@
-﻿let chatAbout = document.querySelector(".chat-header .chat-about h6")
+﻿let token = document.getElementById("token").value
+let chatAbout = document.querySelector(".chat-header .chat-about h6")
 let items = document.querySelectorAll("#plist .clearfix")
 items.forEach(function (item) {
 	item.addEventListener('click', function () {
@@ -13,7 +14,7 @@ items.forEach(function (item) {
 })
 
 //GetPostByConnectionId
-let token = document.getElementById("token").value
+
 let usernName = document.getElementById("userName").value
 
 
@@ -73,7 +74,7 @@ function GetPostByConnectionId(id) {
 
 
 ///SignalR
-var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7055/chatHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7055/chatHub", { accessTokenFactory: () => token }).build();
 connection.start()
 console.log(connection)
 

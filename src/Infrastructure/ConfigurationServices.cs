@@ -1,4 +1,5 @@
-﻿using MessagingSystemApp.Application.Abstractions.Identity;
+﻿using MessagingSystemApp.Application.Abstractions.Hubs;
+using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Repositories;
 using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.MailServices;
@@ -16,6 +17,7 @@ using MessagingSystemApp.Infrastructure.Services.MailServices;
 using MessagingSystemApp.Infrastructure.Services.StorageServices;
 using MessagingSystemApp.Infrastructure.Services.StorageServices.Base;
 using MessagingSystemApp.Infrastructure.Services.TokenServices;
+using MessagingSystemApp.Infrastructure.SignalR.HubServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -61,7 +63,9 @@ namespace MessagingSystemApp.Infrastructure
             serviceCollection.AddScoped<IMailService, MailService>();
             serviceCollection.AddScoped<ITokenService, TokenService>();
             serviceCollection.AddScoped<IStorageService, StorageService>();
-           
+            //SignalRServices
+            serviceCollection.AddScoped<IMessagingHubService, MessagingHubService>();
+
 
 
             return serviceCollection;
