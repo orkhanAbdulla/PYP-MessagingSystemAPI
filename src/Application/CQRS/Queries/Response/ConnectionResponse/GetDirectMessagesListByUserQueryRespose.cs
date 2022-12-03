@@ -12,7 +12,9 @@ namespace MessagingSystemApp.Application.CQRS.Queries.Response.ConnectionRespons
     {
         public int Id { get; set; }
         public string? SenderName { get; set; }
+        public string? SenderSignalRId { get; set; }
         public string? ReciverName { get; set; }
+        public string? ReciverSignalRId { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

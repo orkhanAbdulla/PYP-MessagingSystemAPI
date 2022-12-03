@@ -20,7 +20,7 @@
                             <ul class="list-unstyled chat-list mt-2 mb-0">
                             @foreach (var Channel in Channels)
                             {
-                                <li onclick="GetPostByConnectionId(@Channel.Id)" class="clearfix">
+                                <li onclick="GetPostByConnectionId(@Channel.Id)" class="clearfix" data-connection="@Channel.Id">
                                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
                                     <div class="about">
                                         <div class="name">@Channel.Name</div>
@@ -35,24 +35,30 @@
                         <h6 class="text-secondary">Direct Messages</h6>
                         @foreach (var DirectMessage in DirectMessages)
                         {
-                            <ul class="list-unstyled chat-list mt-2 mb-0">
-                              <li onclick="GetPostByConnectionId(@DirectMessage.Id)" class="clearfix">
+                         <ul class="list-unstyled chat-list mt-2 mb-0">
+                            <li onclick="GetPostByConnectionId(@DirectMessage.Id)" 
+                            class="clearfix" data-connection="@DirectMessage.Id" >
                                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
                                     <div class="about">
-                                        <div class="name">
-                                            @if (DirectMessage.SenderName == Context.Session.GetString("UserName"))
-                                            {
-                                                @DirectMessage.ReciverName
-                                            }
-                                            else
-                                            {
-                                                @DirectMessage.SenderName
-                                            }
-                                        </div>
-                                        <div class="status"> <i class="fa fa-circle offline"></i>online</div>
-                                    </div>
-                                </li>
-                            </ul>
+                          @if (DirectMessage.SenderName == Context.Session.GetString("UserName"))
+                           {
+                            <div class="name">@DirectMessage.ReciverName</div>
+                            <i class="@(DirectMessage.ReciverSignalRId!=null?"fa fa-circle online":"fa fa-circle offline")"></i>
+                            <span id="@DirectMessage.ReciverName" class="status">
+                            @(DirectMessage.ReciverSignalRId!=null?"online":"offline")
+                            </span>
+                            }
+                          else
+                            {
+                             <div class="name">@DirectMessage.SenderName</div>
+                             <i class="@(DirectMessage.SenderSignalRId!=null?"fa fa-circle online":"fa fa-circle offline")"></i>
+                             <span id="@DirectMessage.SenderName" class="status">
+                             @(DirectMessage.SenderSignalRId != null ? "online" : "offline")
+                             </span>
+                             }
+                             </div>
+                           </li>
+                          </ul>
                         }   
                         }
                 </div>
@@ -63,25 +69,29 @@
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
                                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
                                 </a>
-                                <div class="chat-about">
-                                    <h6 class="m-b-0">
+                               
+                               
                                         @if (Channels!=null && Channels.Count!=0)
                                         {
-                                            @Channels[0].Name
+                                            <div class="chat-about" data-connection-Id="@(Channels[0].Id)">
+                                                @Channels[0].Name
+                                              </div>
                                         }
                                         else if(DirectMessages != null && DirectMessages.Count != 0)
                                         {
-                                            @if (DirectMessages[0].SenderName == Context.Session.GetString("UserName"))
-                                            {
+                                           <div class="chat-about" data-connection-Id="@(DirectMessages[0].Id)">
+                                             @if (DirectMessages[0].SenderName == Context.Session.GetString("UserName"))
+                                             {
                                                 @DirectMessages[0].ReciverName
-                                            }
+                                             }
                                             else
                                             {
                                                 @DirectMessages[0].SenderName
                                             }
+                                            </div>
                                         }
-                                        </h6>
-                                </div>
+                             
+                              
                             </div>
                             <div class="col-lg-6 hidden-sm text-right">
                                 <a href="javascript:void(0);" class="btn btn-outline-secondary"><i class="fa fa-camera"></i></a>
@@ -110,7 +120,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-send"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Enter text here...">
+                            <input id="sendButton" type="text" class="form-control" placeholder="Enter text here...">
                         </div>
                     </div>
                 </div>
@@ -118,7 +128,6 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/site.js"></script>
 

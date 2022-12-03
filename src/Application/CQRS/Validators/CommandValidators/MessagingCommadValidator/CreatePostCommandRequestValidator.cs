@@ -12,7 +12,6 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.PostC
     {
         public CreatePostCommandRequestValidator()
         {
-            RuleFor(x => x.EmployeeId).NotEmpty().NotNull();
             RuleFor(x => x.ConnectionId).NotNull().NotEmpty();
         }
     }

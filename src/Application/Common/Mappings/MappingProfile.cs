@@ -32,7 +32,7 @@ namespace MessagingSystemApp.Application.Common.Mappings
             CreateMap<Post, ReplyPostGetDto>();
             CreateMap<Reaction, ReactionGetDto>();
             CreateMap<Post, GetRepliesByPostIdQueryResponse>();
-            CreateMap<Connection, GetDirectMessagesListByUserQueryRespose>().ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.UserName)).ForMember(dest => dest.ReciverName, opt => opt.MapFrom(src => src.Reciver.UserName));
+            CreateMap<Connection, GetDirectMessagesListByUserQueryRespose>().ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.UserName)).ForMember(dest => dest.SenderSignalRId, opt => opt.MapFrom(src => src.Sender.SignalRId)).ForMember(dest => dest.ReciverName, opt => opt.MapFrom(src => src.Reciver.UserName)).ForMember(dest => dest.ReciverSignalRId, opt => opt.MapFrom(src => src.Reciver.SignalRId));
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         }
         private void ApplyMappingsFromAssembly(Assembly assembly)

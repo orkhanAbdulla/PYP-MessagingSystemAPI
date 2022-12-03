@@ -27,16 +27,18 @@ namespace MessagingSystemApp.Infrastructure.SignalR.Hubs
                 Employee employee = await _userManager.FindByNameAsync(Context.User?.Identity?.Name);
                 employee.SignalRId = Context.ConnectionId;
                 await _userManager.UpdateAsync(employee);
+                await Clients.All.SendAsync("UserConnected", employee.UserName);
             }
         }
         public async override Task OnDisconnectedAsync(Exception exception)
         {
             if (Context.User?.Identity?.IsAuthenticated != null)
             {
-                var user = await _userManager.FindByNameAsync(Context.User?.Identity?.Name);
-                user.SignalRId = null;
+                var employee = await _userManager.FindByNameAsync(Context.User?.Identity?.Name);
+                employee.SignalRId = null;
 
-                await _userManager.UpdateAsync(user);
+                await _userManager.UpdateAsync(employee);
+                await Clients.All.SendAsync("UserDisConnected", employee.UserName);
             }
         }
     }

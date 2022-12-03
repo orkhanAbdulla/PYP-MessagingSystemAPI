@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using MessagingSystemApp.Application.Abstractions.Hubs;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Repositories;
 using MessagingSystemApp.Application.Abstractions.Services.StorageServices;
@@ -12,6 +13,7 @@ using MessagingSystemApp.Application.CQRS.Commands.Response.MessagingResponse;
 using MessagingSystemApp.Domain.Entities;
 using MessagingSystemApp.Domain.Enums;
 using MessagingSystemApp.Domain.Identity;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,9 +32,11 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
         private readonly IStorageService _storageService;
         private readonly IPostRepository _postRepository;
         private readonly IAttachmentRepository _attachmentRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMessagingHubService _messagingHubService;
         private readonly IMapper _mapper;
 
-        public CreatePostCommandHandler(IUserService userService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IStorageService storageService, IMapper mapper, IPostRepository postRepository, IAttachmentRepository attachmentRepository)
+        public CreatePostCommandHandler(IUserService userService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IStorageService storageService, IMapper mapper, IPostRepository postRepository, IAttachmentRepository attachmentRepository, IHttpContextAccessor httpContextAccessor, IMessagingHubService messagingHubService)
         {
             _userService = userService;
             _connectionRepository = connectionRepository;
@@ -41,34 +45,38 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
             _mapper = mapper;
             _postRepository = postRepository;
             _attachmentRepository = attachmentRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _messagingHubService = messagingHubService;
         }
 
         public async Task<ICollection<CreatePostCommandResponse>> Handle(CreatePostCommandRequest request, CancellationToken cancellationToken)
         {
+            string userName = _httpContextAccessor.HttpContext.User?.Identity?.Name ?? throw new BadRequestException();
             Connection connection = await _connectionRepository.GetAsync(x => x.Id == request.ConnectionId);
             if (connection == null) throw new NotFoundException(nameof(Connection), request.ConnectionId);
-            bool isExsist = await _userService.IsExistAsync(x => x.Id == request.EmployeeId);
-            if (!isExsist) throw new NotFoundException(nameof(Employee), request.EmployeeId);
+            Employee employee = await _userService.GetUserAsync(x => x.UserName == userName);
+            if (employee==null) throw new NotFoundException(nameof(Employee), userName);
             if (request.FormCollection == null && request.Message == null) throw new BadRequestException();
             var isExsistUserInConnection = true;
             if (connection.IsChannel == true)
             {
                 isExsistUserInConnection = await _employeeChannelRepository.
-                    IsExistAsync(x => x.ChannelId == request.ConnectionId && x.EmployeeId == request.EmployeeId);
+                    IsExistAsync(x => x.ChannelId == request.ConnectionId && x.EmployeeId == employee.Id);
                 if (!isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{request.EmployeeId}\"is not in Connection:\"{request.ConnectionId}\"");
+                        ($"The EmployeeId:\"{userName}\"is not in Connection:\"{request.ConnectionId}\"");
             }
             if (connection.IsPrivate == true)
             {
                 isExsistUserInConnection = await _connectionRepository.
-                 IsExistAsync(x => x.SenderId == request.EmployeeId && x.ReciverId == request.EmployeeId);
+                 IsExistAsync(x => x.SenderId == employee.Id && x.ReciverId == employee.Id);
                 if (isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{request.EmployeeId}\"is not in Connection:\"{request.ConnectionId}\"");
+                        ($"The EmployeeId:\"{employee.Id}\"is not in Connection:\"{request.ConnectionId}\"");
             }
             Post post = _mapper.Map<Post>(request);
-            post.EmployeeId = request.EmployeeId;
+            post.EmployeeId = employee.Id;
             await _postRepository.AddAsync(post);
             await _postRepository.SaveChangesAsync(cancellationToken);
+            await _messagingHubService.CreatePostInChannelAsync(connection.Id, post.Message, userName, post.CreatedAt);
             // File Upload
             List<AttachmentPostDto> attachmentDto = new List<AttachmentPostDto>();
             if (request.FormCollection != null)
