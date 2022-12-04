@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Application.CQRS.Commands.Request.MessagingRequest
 {
-    public class CreatePostCommandRequest:IRequest<ICollection<CreatePostCommandResponse>>,IMapFrom<Post>
+    public class CreatePostCommandRequest:IRequest<CreatePostCommandResponse>,IMapFrom<Post>
     {
         public int ConnectionId { get; set; }
         public string Message { get; set; } = null!;

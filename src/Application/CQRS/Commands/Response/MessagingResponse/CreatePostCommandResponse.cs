@@ -1,11 +1,17 @@
-﻿using MessagingSystemApp.Domain.Enums;
+﻿using MessagingSystemApp.Application.Common.Dtos.AttachmentDtos;
+using MessagingSystemApp.Application.Common.Mappings;
+using MessagingSystemApp.Domain.Entities;
+using MessagingSystemApp.Domain.Enums;
+
+
 namespace MessagingSystemApp.Application.CQRS.Commands.Response.MessagingResponse
 {
-    public class CreatePostCommandResponse
+    public class CreatePostCommandResponse:IMapFrom<Post>
     {
-        public string FileName { get; set; } = null!;
-        public string Type { get; set; }=null!;
-        public string Path { get; set; } = null!;
-        public int PostId { get; set; }
+        public int Id { get; set; }
+        public string Message { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; } = null!;
+        public ICollection<AttachmentGetDto>? AttachmentGetDtos { get; set; }
     }
 }

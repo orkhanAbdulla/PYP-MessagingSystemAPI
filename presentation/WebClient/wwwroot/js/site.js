@@ -1,4 +1,6 @@
 ﻿let token = document.getElementById("token").value
+let usernName = document.getElementById("userName").value
+let chat = document.querySelector(".card .chat")
 
 var chatAbout = document.querySelector(".chat-header .chat-about")
 let items = document.querySelectorAll("#plist .clearfix")
@@ -13,12 +15,14 @@ items.forEach(function (item) {
         chatAbout.innerText = name
         let connection = item.getAttribute('data-connection')
         chatAbout.setAttribute("data-connection-Id", connection)
+        chat.setAttribute("id", connection);
+       
 	})
 })
 
 //GetPostByConnectionId
 
-let usernName = document.getElementById("userName").value
+
 function GetPostByConnectionId(id) {
     var formData = {
         ConnectionId: id,
@@ -75,10 +79,10 @@ function GetPostByConnectionId(id) {
 
 // CreatePost
 var inpudSend = document.getElementById("sendButton")
-inpudSend.addEventListener("keypress",(e) => {
+inpudSend.addEventListener("keypress", (e) => {
     if (e.key === 'Enter') {
-        var message = inpudSend.value
         var connectionId = chatAbout.getAttribute('data-connection-Id')
+        var message = inpudSend.value
         var formData = {
             ConnectionId: connectionId,
             Message: message,
@@ -89,9 +93,25 @@ inpudSend.addEventListener("keypress",(e) => {
             data: formData,
             dataType: "json",
             headers: { "Authorization": 'Bearer ' + token },
-        }).done(function () {
-            inpudSend.value=""
-           console.log("okey")
+        }).done(function ({ id, message, createdAt, }) {
+            inpudSend.value = ""
+            let date = new Date(createdAt)
+            $(".chat .chat-history ul").append(
+                `
+                  <li class="clearfix">
+                    <div class="message-data">
+                        <span class="message-data-time">
+                            Me
+                        </span>
+                        <span class="message-data-time" style="font-size:10px">
+                        ${date.toLocaleString('en-Us', { weekday: "long", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit', })}
+                        </span>
+                    </div>
+                    <div class="message my-message">${message}</div>
+                </li>
+                   `
+            )
+        
         })
     }
 
@@ -105,9 +125,11 @@ inpudSend.addEventListener("keypress",(e) => {
 var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7055/chatHub", { accessTokenFactory: () => token }).build();
 connection.start()
 
-connection.on("ReceiveMessage", function (message, userName, date) {
-    $(".chat .chat-history ul").append(
-        `
+connection.on("ReceiveMessage", function (connectionId,message, userName, CreatedAt) {
+    let date = new Date(CreatedAt)
+    console.log(connectionId)
+    document.getElementById(connectionId).children[1]
+        .firstElementChild.innerHTML += `
            <li class="clearfix">
                <div class="message-data text-right">
                   <span class="message-data-time">${userName}
@@ -119,7 +141,6 @@ connection.on("ReceiveMessage", function (message, userName, date) {
                     <div class="message other-message float-right">${message}</div>
              </li>
       `
-    )
 })
 
 

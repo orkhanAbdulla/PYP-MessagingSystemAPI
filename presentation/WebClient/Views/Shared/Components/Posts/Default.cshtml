@@ -3,7 +3,7 @@
     string username = Context.Session.GetString("UserName");
     var posts = Model;
 }
-<ul class="m-b-0"  style="box-sizing:border-box; overflow-x:hidden">
+<ul class="m-b-0"  style="height:800px;box-sizing:border-box; overflow-x:hidden">
     @foreach (var post in posts)
     {
         <li class="clearfix" data-id="{@post.Id}">

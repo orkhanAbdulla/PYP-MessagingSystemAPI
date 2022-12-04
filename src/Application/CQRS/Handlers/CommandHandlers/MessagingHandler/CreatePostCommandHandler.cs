@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.MessagingHandler
 {
-    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommandRequest,ICollection<CreatePostCommandResponse>>
+    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommandRequest,CreatePostCommandResponse>
     {
         private readonly IUserService _userService;
         private readonly IConnectionRepository _connectionRepository;
@@ -49,7 +49,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
             _messagingHubService = messagingHubService;
         }
 
-        public async Task<ICollection<CreatePostCommandResponse>> Handle(CreatePostCommandRequest request, CancellationToken cancellationToken)
+        public async Task<CreatePostCommandResponse> Handle(CreatePostCommandRequest request, CancellationToken cancellationToken)
         {
             string userName = _httpContextAccessor.HttpContext.User?.Identity?.Name ?? throw new BadRequestException();
             Connection connection = await _connectionRepository.GetAsync(x => x.Id == request.ConnectionId);
@@ -63,7 +63,8 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                 isExsistUserInConnection = await _employeeChannelRepository.
                     IsExistAsync(x => x.ChannelId == request.ConnectionId && x.EmployeeId == employee.Id);
                 if (!isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{userName}\"is not in Connection:\"{request.ConnectionId}\"");
+                        ($"The EmployeeId:\"{employee.Id}\"is not in Connection:\"{request.ConnectionId}\"");
+                await _messagingHubService.CreatePostInChannelAsync(connection.Id, request.Message, userName);
             }
             if (connection.IsPrivate == true)
             {
@@ -71,14 +72,14 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                  IsExistAsync(x => x.SenderId == employee.Id && x.ReciverId == employee.Id);
                 if (isExsistUserInConnection) throw new BadRequestException
                         ($"The EmployeeId:\"{employee.Id}\"is not in Connection:\"{request.ConnectionId}\"");
+                await _messagingHubService.PostInDirectlyMessage(connection, request.Message,employee.Id, employee.UserName);
             }
             Post post = _mapper.Map<Post>(request);
             post.EmployeeId = employee.Id;
             await _postRepository.AddAsync(post);
             await _postRepository.SaveChangesAsync(cancellationToken);
-            await _messagingHubService.CreatePostInChannelAsync(connection.Id, post.Message, userName, post.CreatedAt);
-            // File Upload
-            List<AttachmentPostDto> attachmentDto = new List<AttachmentPostDto>();
+            
+            List<AttachmentGetDto> attachmentDtos = new List<AttachmentGetDto>();
             if (request.FormCollection != null)
             {
                 foreach (var file in request.FormCollection)
@@ -88,19 +89,15 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                     var fileType = _storageService.GetFileType(file.ContentType);
                     if (fileType == 0) throw new FileFormatException($"can't upload {file.ContentType} file");
                     var result = await _storageService.UploadAsync("attachments", file);
-                    attachmentDto.Add(new AttachmentPostDto { FileName = result.fileName, FileType = fileType, Path = result.path, PostId = post.Id });
+                    attachmentDtos.Add(new AttachmentGetDto { FileName = result.fileName, FileType = fileType, Path = result.path,});
                 }
-                IEnumerable<Attachment> attachments = _mapper.Map<IEnumerable<Attachment>>(attachmentDto);
+                IEnumerable<Attachment> attachments = _mapper.Map<IEnumerable<Attachment>>(attachmentDtos);
                 await _attachmentRepository.AddRangeAsync(attachments);
                 await _attachmentRepository.SaveChangesAsync(cancellationToken);
             }
-            // TODO: Duzelish edersen!!!
-            List<CreatePostCommandResponse> CreatePostCommandResponse = new();
-            foreach (var x in attachmentDto)
-            {
-                CreatePostCommandResponse.Add(new CreatePostCommandResponse()
-                { FileName = x.FileName, Path = x.Path, PostId = x.PostId, Type = x.FileType.ToString() });
-            }
+            CreatePostCommandResponse CreatePostCommandResponse =_mapper.Map<CreatePostCommandResponse>(post);
+            CreatePostCommandResponse.AttachmentGetDtos = attachmentDtos;
+        
 
             return CreatePostCommandResponse;
         }
