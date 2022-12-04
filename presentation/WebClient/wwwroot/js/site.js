@@ -125,7 +125,7 @@ inpudSend.addEventListener("keypress", (e) => {
 var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7055/chatHub", { accessTokenFactory: () => token }).build();
 connection.start()
 
-connection.on("ReceiveMessage", function (connectionId,message, userName, CreatedAt) {
+connection.on("ReceivePost", function (connectionId,message, userName, CreatedAt) {
     let date = new Date(CreatedAt)
     console.log(connectionId)
     document.getElementById(connectionId).children[1]

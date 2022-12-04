@@ -10,6 +10,7 @@ namespace MessagingSystemApp.Application.Abstractions.Hubs
     public interface IMessagingHubService
     {
         public Task CreatePostInChannelAsync(int connectionId, string message, string userName);
-        public Task PostInDirectlyMessage(Connection connectionId, string message, string userId, string UserName);
+        public Task CreatePostInDirectlyMessage(Connection connectionId, string message, string userId, string UserName);
+        public Task CreateReplyInPost(int postId, string message, string userName);
     }
 }

@@ -64,7 +64,6 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                     IsExistAsync(x => x.ChannelId == request.ConnectionId && x.EmployeeId == employee.Id);
                 if (!isExsistUserInConnection) throw new BadRequestException
                         ($"The EmployeeId:\"{employee.Id}\"is not in Connection:\"{request.ConnectionId}\"");
-                await _messagingHubService.CreatePostInChannelAsync(connection.Id, request.Message, userName);
             }
             if (connection.IsPrivate == true)
             {
@@ -72,7 +71,6 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                  IsExistAsync(x => x.SenderId == employee.Id && x.ReciverId == employee.Id);
                 if (isExsistUserInConnection) throw new BadRequestException
                         ($"The EmployeeId:\"{employee.Id}\"is not in Connection:\"{request.ConnectionId}\"");
-                await _messagingHubService.PostInDirectlyMessage(connection, request.Message,employee.Id, employee.UserName);
             }
             Post post = _mapper.Map<Post>(request);
             post.EmployeeId = employee.Id;
@@ -97,9 +95,16 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
             }
             CreatePostCommandResponse CreatePostCommandResponse =_mapper.Map<CreatePostCommandResponse>(post);
             CreatePostCommandResponse.AttachmentGetDtos = attachmentDtos;
-        
+            if (connection.IsChannel == true)
+            {
+              await _messagingHubService.CreatePostInChannelAsync(connection.Id, request.Message, userName);
+            }
+            else
+            {
+               await _messagingHubService.CreatePostInDirectlyMessage(connection, request.Message, employee.Id, employee.UserName);
+            }
 
-            return CreatePostCommandResponse;
+                return CreatePostCommandResponse;
         }
     }
 }
