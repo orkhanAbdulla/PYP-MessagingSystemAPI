@@ -11,7 +11,6 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest
     public class UpdateConnectionCommandRequest:IRequest<UpdateConnectionCommandResponse>
     {
         public int Id { get; set; }
-        public string UserName { get; set; } = null!;
         public string ChannelName { get; set; } = null!;
 
     }

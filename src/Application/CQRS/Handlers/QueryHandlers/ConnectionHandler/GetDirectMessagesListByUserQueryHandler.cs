@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.CQRS.Queries.Request.ConnectionRequest;
@@ -18,25 +19,19 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.QueryHandlers.ConnectionH
 {
     public class GetDirectMessagesListByUserQueryHandler : IRequestHandler<GetDirectMessagesListByUserQueryRequest, IEnumerable<GetDirectMessagesListByUserQueryRespose>>
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly IConnectionRepository _connectionRepository;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public GetDirectMessagesListByUserQueryHandler(IUserService userService, IConnectionRepository connectionRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public GetDirectMessagesListByUserQueryHandler(IAuthService authService, IConnectionRepository connectionRepository, IMapper mapper)
         {
-            _userService = userService;
+            _authService = authService;
             _connectionRepository = connectionRepository;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
-            
         }
 
         public async Task<IEnumerable<GetDirectMessagesListByUserQueryRespose>> Handle(GetDirectMessagesListByUserQueryRequest request, CancellationToken cancellationToken)
         {
-            string userName = _httpContextAccessor.HttpContext.User?.Identity?.Name ?? throw new BadRequestException();
-            Employee employee = await _userService.GetUserAsync(x => x.UserName == userName);
-            if (employee == null) throw new NotFoundException(nameof(Employee),userName);
+            Employee employee = await _authService.GetUserAuthAsync();
             return _mapper.Map<IEnumerable<GetDirectMessagesListByUserQueryRespose>>(await _connectionRepository.
                 GetAllAsync(x => x.SenderId == employee.Id || x.ReciverId == employee.Id, true, "Sender", "Reciver")); ;
         }

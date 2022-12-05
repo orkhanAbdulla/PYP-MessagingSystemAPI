@@ -12,7 +12,6 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.Emplo
     {
         public ChangePasswordCommandRequestValidator()
         {
-            RuleFor(x => x.Username).NotNull().NotEmpty();
             RuleFor(x => x.CurrentPassword).NotEmpty().NotNull();
             RuleFor(x => x.NewPassword).NotEmpty().NotNull();
         }

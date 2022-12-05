@@ -42,3 +42,9 @@
 2022-12-06 04:55:38.045 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 318.0575ms
 2022-12-06 05:07:48.067 +04:00 [ERR] The email or password is incorrect
 2022-12-06 05:08:52.348 +04:00 [ERR] The email or password is incorrect
+2022-12-06 05:38:02.649 +04:00 [ERR] Please verify your email
+2022-12-06 06:25:38.076 +04:00 [ERR] Please enter the current password correctly
+2022-12-06 06:27:11.299 +04:00 [ERR] Your new and old password cannot be the same
+2022-12-06 07:18:59.740 +04:00 [ERR] this channel was not created by Orkhan96
+2022-12-06 07:19:59.640 +04:00 [ERR] The email or password is incorrect
+2022-12-06 07:22:28.537 +04:00 [ERR] this channel was not created by Orkhan96

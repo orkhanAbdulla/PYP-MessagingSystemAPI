@@ -26,6 +26,7 @@ namespace MessagingSystemApp.Api.Controllers
             return Ok(await Mediator.Send(command));
         }
         [HttpPost("[action]")]
+        [Authorize]
         public async Task<IActionResult> RefreshTokenLogin([FromQuery]RefreshTokenLoginCommandRequest command)
         {
             return Ok(await Mediator.Send(command));
@@ -51,6 +52,7 @@ namespace MessagingSystemApp.Api.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
+
 
     }
 }

@@ -1,12 +1,16 @@
 ﻿using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
+using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Helpers;
 using MessagingSystemApp.Application.Common.Models;
 using MessagingSystemApp.Domain.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +21,12 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
     {
 
         private readonly UserManager<Employee> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(UserManager<Employee> userManager)
+        public AuthService(UserManager<Employee> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<string> ForgetPassawordAsync(Employee employee)
@@ -50,6 +56,11 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Identity
             token=token.UrlDecode();
             return await _userManager.VerifyUserTokenAsync(employee, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", token);
         }
-        
+        public async Task<Employee> GetUserAuthAsync()
+        {
+            string userName = _httpContextAccessor.HttpContext.User?.Identity?.Name ?? throw new BadRequestException();
+            return await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == userName);
+        }
+
     }
 }

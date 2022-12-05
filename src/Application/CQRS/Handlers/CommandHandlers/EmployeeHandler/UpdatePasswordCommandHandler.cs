@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Models;
 using MessagingSystemApp.Application.CQRS.Commands.Request.EmployeeRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.EmployeeResponse;
 using MessagingSystemApp.Domain.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -17,16 +19,18 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
     public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommandRequest, UpdatePasswordCommandResponse>
     {
         private readonly IUserService _userService;
+        private readonly IAuthService  _authService;
 
-        public UpdatePasswordCommandHandler(IUserService userService)
+
+        public UpdatePasswordCommandHandler(IUserService userService, IHttpContextAccessor httpContextAccessor, IAuthService authService)
         {
             _userService = userService;
+            _authService = authService;
         }
 
         public async Task<UpdatePasswordCommandResponse> Handle(UpdatePasswordCommandRequest request, CancellationToken cancellationToken)
         {
-            Employee employee = await _userService.GetUserAsync(x => x.Id == request.UserId);
-            if (employee == null) throw new NotFoundException(nameof(Employee),request.UserId);
+            Employee employee = await _authService.GetUserAuthAsync();
             IdentityResult result = await _userService.UpdatePasswordAsync(employee, request.Token, request.Password);
             if (!result.Succeeded) throw new ValidationException(result);
             return new UpdatePasswordCommandResponse() { };

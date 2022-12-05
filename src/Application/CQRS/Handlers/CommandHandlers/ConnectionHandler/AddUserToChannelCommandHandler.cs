@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Repositories;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.CQRS.Commands.Request.ConnectionRequest;
@@ -18,18 +19,19 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Connectio
     public class AddUserToChannelCommandHandler : IRequestHandler<AddUserToChannelCommandRequest, AddUserToChannelCommandResponse>
     {
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly IEmployeeChannelRepository _employeeChannelRepository;
 
-        public AddUserToChannelCommandHandler(IUserService userService,IEmployeeChannelRepository employeeChannelRepository)
+        public AddUserToChannelCommandHandler(IUserService userService, IEmployeeChannelRepository employeeChannelRepository, IAuthService authService)
         {
             _userService = userService;
             _employeeChannelRepository = employeeChannelRepository;
+            _authService = authService;
         }
 
         public async Task<AddUserToChannelCommandResponse> Handle(AddUserToChannelCommandRequest request, CancellationToken cancellationToken)
         {
-            Employee CurrentEmployee = await _userService.GetUserAsync(x => x.UserName == request.UserName);
-            if (CurrentEmployee==null) throw new NotFoundException(nameof(Employee), request.UserName);
+            Employee CurrentEmployee = await _authService.GetUserAuthAsync();
             Employee AddedEmployee = await _userService.GetUserAsync(x => x.UserName == request.AddedUser);
             if (AddedEmployee==null) throw new NotFoundException(nameof(Employee), request.AddedUser);
             var IsExistCurrentEmployeeChannel = await _employeeChannelRepository.

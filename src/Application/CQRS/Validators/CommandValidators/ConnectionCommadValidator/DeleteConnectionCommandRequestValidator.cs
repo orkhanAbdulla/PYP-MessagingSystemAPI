@@ -13,7 +13,6 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.Conne
         public DeleteConnectionCommandRequestValidator()
         {
             RuleFor(x => x.Id).NotNull().NotEmpty();
-            RuleFor(x => x.UserName).NotNull().NotEmpty();
         }
     }
 }

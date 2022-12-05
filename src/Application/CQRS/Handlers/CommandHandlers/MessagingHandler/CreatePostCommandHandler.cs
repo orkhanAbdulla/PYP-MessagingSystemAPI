@@ -3,6 +3,7 @@ using MediatR;
 using MessagingSystemApp.Application.Abstractions.Hubs;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Repositories;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.StorageServices;
 using MessagingSystemApp.Application.Abstractions.Services.StorageServices.Base;
 using MessagingSystemApp.Application.Abstracts.Repositories;
@@ -26,36 +27,32 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
 {
     public class CreatePostCommandHandler : IRequestHandler<CreatePostCommandRequest,CreatePostCommandResponse>
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService  _authService;
         private readonly IConnectionRepository _connectionRepository;
         private readonly IEmployeeChannelRepository _employeeChannelRepository;
         private readonly IStorageService _storageService;
         private readonly IPostRepository _postRepository;
         private readonly IAttachmentRepository _attachmentRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMessagingHubService _messagingHubService;
         private readonly IMapper _mapper;
 
-        public CreatePostCommandHandler(IUserService userService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IStorageService storageService, IMapper mapper, IPostRepository postRepository, IAttachmentRepository attachmentRepository, IHttpContextAccessor httpContextAccessor, IMessagingHubService messagingHubService)
+        public CreatePostCommandHandler(IAuthService authService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IStorageService storageService, IMapper mapper, IPostRepository postRepository, IAttachmentRepository attachmentRepository,IMessagingHubService messagingHubService)
         {
-            _userService = userService;
+            _authService = authService;
             _connectionRepository = connectionRepository;
             _employeeChannelRepository = employeeChannelRepository;
             _storageService = storageService;
             _mapper = mapper;
             _postRepository = postRepository;
             _attachmentRepository = attachmentRepository;
-            _httpContextAccessor = httpContextAccessor;
             _messagingHubService = messagingHubService;
         }
 
         public async Task<CreatePostCommandResponse> Handle(CreatePostCommandRequest request, CancellationToken cancellationToken)
         {
-            string userName = _httpContextAccessor.HttpContext.User?.Identity?.Name ?? throw new BadRequestException();
+            Employee employee = await _authService.GetUserAuthAsync();
             Connection connection = await _connectionRepository.GetAsync(x => x.Id == request.ConnectionId);
             if (connection == null) throw new NotFoundException(nameof(Connection), request.ConnectionId);
-            Employee employee = await _userService.GetUserAsync(x => x.UserName == userName);
-            if (employee==null) throw new NotFoundException(nameof(Employee), userName);
             if (request.FormCollection == null && request.Message == null) throw new BadRequestException();
             var isExsistUserInConnection = true;
             if (connection.IsChannel == true)
@@ -70,7 +67,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                 isExsistUserInConnection = await _connectionRepository.
                  IsExistAsync(x => x.SenderId == employee.Id && x.ReciverId == employee.Id);
                 if (isExsistUserInConnection) throw new BadRequestException
-                        ($"The EmployeeId:\"{employee.Id}\"is not in Connection:\"{request.ConnectionId}\"");
+                        ($"The EmployeeId:\"{employee.Id}\"is not in the Connection:\"{request.ConnectionId}\"");
             }
             Post post = _mapper.Map<Post>(request);
             post.EmployeeId = employee.Id;
@@ -97,7 +94,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
             CreatePostCommandResponse.AttachmentGetDtos = attachmentDtos;
             if (connection.IsChannel == true)
             {
-              await _messagingHubService.CreatePostInChannelAsync(connection.Id, request.Message, userName);
+              await _messagingHubService.CreatePostInChannelAsync(connection.Id, request.Message, employee.UserName);
             }
             else
             {

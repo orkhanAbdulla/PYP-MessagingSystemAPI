@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.TokenServices;
 using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Models;
@@ -17,18 +18,19 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
     public class RefreshTokenLoginCommandHandler : IRequestHandler<RefreshTokenLoginCommandRequest, RefreshTokenLoginCommandResponse>
     {
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly ITokenService _tokenService;
 
-        public RefreshTokenLoginCommandHandler(IUserService userService, ITokenService tokenService)
+        public RefreshTokenLoginCommandHandler(IAuthService authService, ITokenService tokenService, IUserService userService)
         {
-            _userService = userService;
+            _authService = authService;
             _tokenService = tokenService;
+            _userService = userService;
         }
 
         public async Task<RefreshTokenLoginCommandResponse> Handle(RefreshTokenLoginCommandRequest request, CancellationToken cancellationToken)
         {
-            Employee employee=await _userService.GetUserAsync(x=>x.RefreshToken==request.RefreshToken);
-            if (employee==null) throw new NotFoundException(nameof(Employee), request.RefreshToken); 
+            Employee employee=await _authService.GetUserAuthAsync();
             if (employee.RefreshTokenEndDate < DateTime.Now) throw new ExpiredException();
             Token token = _tokenService.GenerateAccessToken(employee, 2);
             await _userService.UpdateRefreshToken(employee, token.RefreshToken, token.Expiration, 3);

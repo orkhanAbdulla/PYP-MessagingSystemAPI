@@ -2,6 +2,7 @@
 using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Repositories;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.CQRS.Queries.Request.ConnectionRequest;
@@ -19,24 +20,20 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.QueryHandlers.ConnectionH
 {
     internal class GetChannelListByUserQueryHandler : IRequestHandler<GetChannelListByUserQueryRequest, IEnumerable<GetChannelListByUserQueryResponse>>
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService  _authService;
         private readonly IEmployeeChannelRepository _employeeChannelRepository;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GetChannelListByUserQueryHandler(IUserService userService, IEmployeeChannelRepository employeeChannelRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public GetChannelListByUserQueryHandler(IEmployeeChannelRepository employeeChannelRepository, IMapper mapper, IAuthService authService)
         {
-            _userService = userService;
             _employeeChannelRepository = employeeChannelRepository;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
+            _authService = authService;
         }
 
         public async Task<IEnumerable<GetChannelListByUserQueryResponse>> Handle(GetChannelListByUserQueryRequest request, CancellationToken cancellationToken)
         {
-            string userName = _httpContextAccessor.HttpContext.User?.Identity?.Name ?? throw new BadRequestException();
-            Employee employee = await _userService.GetUserAsync(x => x.UserName == userName);
-            if (employee == null) throw new NotFoundException(nameof(Employee), userName);
+            Employee employee = await _authService.GetUserAuthAsync();
             var employeeChannels = await _employeeChannelRepository.GetAllAsync(x => x.EmployeeId == employee.Id, true, "Channel");
             return _mapper.Map<IEnumerable<GetChannelListByUserQueryResponse>>(employeeChannels.Select(x => x.Channel).ToList());
         }

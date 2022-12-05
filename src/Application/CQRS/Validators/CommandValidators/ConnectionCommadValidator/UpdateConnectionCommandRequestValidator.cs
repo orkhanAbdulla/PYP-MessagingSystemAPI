@@ -14,7 +14,6 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.Conne
         {
             RuleFor(x => x.Id).NotNull().NotEmpty();
             RuleFor(x=>x.ChannelName).NotNull().NotEmpty().MaximumLength(50);
-            RuleFor(x => x.UserName).NotEmpty().NotNull();
         }
     }
 }

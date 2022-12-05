@@ -15,5 +15,6 @@ namespace MessagingSystemApp.Application.Abstractions.Services.IdentityServices
         public Task<bool> VerifyForgetPasswordAsync(Employee employee, string token);
         public Task<string>GenerateEmailConfirmationTokenAsync(string Id);
         public Task<IdentityResult> VerifyEmailConfirmationToken(Employee employee,string token);
+        public Task<Employee> GetUserAuthAsync();
     }
 }

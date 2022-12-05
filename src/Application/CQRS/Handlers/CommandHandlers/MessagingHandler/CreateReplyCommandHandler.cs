@@ -3,6 +3,7 @@ using MediatR;
 using MessagingSystemApp.Application.Abstractions.Hubs;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Repositories;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.StorageServices;
 using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Application.Common.Exceptions;
@@ -21,32 +22,29 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
 {
     public class CreateReplyCommandHandler : IRequestHandler<CreateReplyCommandRequest, CreateReplyCommandResponse>
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly IConnectionRepository _connectionRepository;
         private readonly IEmployeeChannelRepository _employeeChannelRepository;
         private readonly IStorageService _storageService;
         private readonly IPostRepository _postRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMessagingHubService _messagingHubService;
         private readonly IMapper _mapper;
 
-        public CreateReplyCommandHandler(IUserService userService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IStorageService storageService, IPostRepository postRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor, IMessagingHubService messagingHubService)
+        public CreateReplyCommandHandler(IUserService userService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IStorageService storageService, IPostRepository postRepository, IMapper mapper, IMessagingHubService messagingHubService, IAuthService authService)
         {
-            _userService = userService;
+
             _connectionRepository = connectionRepository;
             _employeeChannelRepository = employeeChannelRepository;
             _storageService = storageService;
             _postRepository = postRepository;
-            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
             _messagingHubService = messagingHubService;
+            _authService = authService;
         }
 
         public async Task<CreateReplyCommandResponse> Handle(CreateReplyCommandRequest request, CancellationToken cancellationToken)
         {
-            string userName= _httpContextAccessor.HttpContext.User?.Identity?.Name ?? throw new BadRequestException();
-            Employee employee = await _userService.GetUserAsync(x => x.UserName == userName);
-            if (employee==null) throw new NotFoundException(nameof(Employee), userName);
+            Employee employee = await _authService.GetUserAuthAsync();
             Post post = await _postRepository.GetAsync(x => x.Id == request.ReplyPostId, true, nameof(Connection));
             if (post == null)throw new NotFoundException(nameof(Post), request.ReplyPostId);
             var result = post.Connection.Id != request.ConnectionId;
@@ -56,9 +54,10 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
             Post ReplyPost = _mapper.Map<Post>(request);
             ReplyPost.EmployeeId=employee.Id;
             ReplyPost.IsReply = true;
+
             await _postRepository.AddAsync(ReplyPost);
             await _postRepository.SaveChangesAsync(cancellationToken);
-            await _messagingHubService.CreateReplyInPost(post.Id, request.Message, userName);
+            await _messagingHubService.CreateReplyInPost(post.Id, request.Message, employee.UserName);
 
             return new CreateReplyCommandResponse() { Id = ReplyPost.Id };
         }

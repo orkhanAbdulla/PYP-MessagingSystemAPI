@@ -13,7 +13,6 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.Conne
         public AddUserToChannelCommandRequestValidator()
         {
             RuleFor(x => x.ConnectionId).NotNull().NotEmpty();
-            RuleFor(x=>x.UserName).NotNull().NotEmpty();
             RuleFor(x => x.AddedUser).NotNull().NotEmpty();
         }
     }

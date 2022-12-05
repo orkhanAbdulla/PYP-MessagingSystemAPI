@@ -10,7 +10,6 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Request.EmployeeRequest
 {
     public class UpdatePasswordCommandRequest:IRequest<UpdatePasswordCommandResponse>
     {
-        public string UserId { get; set; } = null!;
         public string Token { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string PasswordConfirm { get; set; } = null!;

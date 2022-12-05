@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Repositories;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstracts.Common;
 using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Application.Common.Exceptions;
@@ -21,26 +22,26 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Connectio
     {
         private readonly IConnectionRepository _connectionRepository;
         private readonly IEmployeeChannelRepository _employeeChannelRepository;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly IApplicationDbContext _applicationDbContext;
-        public DeleteConnectionCommandHandler(IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IUserService userService, IApplicationDbContext applicationDbContext)
+        public DeleteConnectionCommandHandler(IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IAuthService authService, IApplicationDbContext applicationDbContext)
         {
             _connectionRepository = connectionRepository;
             _employeeChannelRepository = employeeChannelRepository;
-            _userService = userService;
+            _authService = authService;
             _applicationDbContext = applicationDbContext;
         }
 
         public async Task<int> Handle(DeleteConnectionCommandRequest request, CancellationToken cancellationToken)
         {
-            Employee employee = await _userService.GetUserAsync(x => x.UserName == request.UserName);
-            if (employee == null) throw new NotFoundException(nameof(Employee), request.UserName);
+            Employee employee = await _authService.GetUserAuthAsync();
             if (request.IsChannel)
             {
-                // TODO: Only remove that emoloyee created this connection
+                bool isExsistChanel = await _connectionRepository.IsExistAsync(x => x.Id == request.Id);
+                if (!isExsistChanel) throw new NotFoundException(nameof(Connection), $"Id:{request.Id}");
                 EmployeeChannel employeeChannel = await _employeeChannelRepository.
-                    GetAsync(x => x.ChannelId == request.Id && x.EmployeeId == employee.Id, true,"Channel");
-                if (employeeChannel==null) throw new NotFoundException(nameof(Connection), $"Id:{request.Id}");
+                    GetAsync(x => x.ChannelId == request.Id && x.EmployeeId == employee.Id &&  x.Channel.CreatedBy == employee.UserName, true,"Channel");
+                if (employeeChannel == null) throw new UnauthorizedAccessException($"this channel was not created by {employee.UserName}");
                 _connectionRepository.Remove(employeeChannel.Channel);
                 await _connectionRepository.SaveChangesAsync(cancellationToken);
                 return request.Id;

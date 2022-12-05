@@ -12,7 +12,7 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.Emplo
     {
         public RefreshTokenLoginCommandRequestValidator()
         {
-            RuleFor(x => x.RefreshToken).NotNull().NotEmpty();
+          
         }
     }
 }

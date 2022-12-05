@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.TokenServices;
 using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Models;
@@ -17,18 +18,19 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.EmployeeH
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommandRequest, ChangePasswordCommandResponse>
     {
         private readonly IUserService _userService;
+        private readonly IAuthService authService;
         private readonly ITokenService _tokenService;
 
-        public ChangePasswordCommandHandler(IUserService userService, ITokenService tokenService)
+        public ChangePasswordCommandHandler(IUserService userService, ITokenService tokenService, IAuthService authService)
         {
             _userService = userService;
             _tokenService = tokenService;
+            this.authService = authService;
         }
 
         public async Task<ChangePasswordCommandResponse> Handle(ChangePasswordCommandRequest request, CancellationToken cancellationToken)
         {
-            Employee employee = await _userService.GetUserAsync(x => x.UserName == request.Username);
-            if (employee == null) throw new NotFoundException(nameof(Employee), request.Username);
+            Employee employee = await authService.GetUserAuthAsync();
             var success = !await _userService.ChekCurrentPasswordAsync(employee, request.CurrentPassword);
             if (success) throw new BadRequestException("Please enter the current password correctly");
             var IsSame = _userService.CheckPasswordsIsSame(employee, request.NewPassword);
