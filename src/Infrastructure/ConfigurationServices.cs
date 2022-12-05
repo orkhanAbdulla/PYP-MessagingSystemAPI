@@ -34,7 +34,7 @@ namespace MessagingSystemApp.Infrastructure
         {
             serviceCollection.AddScoped<AuditableEntitySaveChangesInterceptor>();
             ///AddContext
-            serviceCollection.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),builderoptions=>builderoptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+            serviceCollection.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), builderoptions => builderoptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             //AddIdentityLibrary
             serviceCollection.AddIdentity<Employee, IdentityRole>(options =>

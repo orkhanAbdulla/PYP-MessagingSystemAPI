@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Xfso2bhfEGU3Gky5zT6EJjFgaFxanqMX8fFL9usD+qjU+OA1kz+froCcW4SE+7gfJBuTaGLNjGBEu19j8Q0peQ==",
+  "dgSpecHash": "ZekdaE//UMARJzLRU4HYSutRrXEt5Xo88nKrVdcjLqX/gtY66X5VKf8MHVWrnTxIZWeOlpjK1Z7L7FlZ7EWDhQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\hp\\Desktop\\PYP\\MessagingSystemApp\\src\\Application\\Application.csproj",
   "expectedPackageFiles": [
@@ -51,6 +51,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.net.http.headers\\2.2.0\\microsoft.net.http.headers.2.2.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",

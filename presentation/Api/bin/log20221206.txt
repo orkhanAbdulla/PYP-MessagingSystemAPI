@@ -1,0 +1,44 @@
+2022-12-06 04:50:04.060 +04:00 [INF] User profile is available. Using 'C:\Users\hp\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-12-06 04:50:04.314 +04:00 [INF] Now listening on: https://localhost:7055
+2022-12-06 04:50:04.314 +04:00 [INF] Now listening on: http://localhost:5055
+2022-12-06 04:50:04.316 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-12-06 04:50:04.317 +04:00 [INF] Hosting environment: Development
+2022-12-06 04:50:04.317 +04:00 [INF] Content root path: C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\
+2022-12-06 04:50:05.342 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/swagger/index.html - -
+2022-12-06 04:50:05.661 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/swagger/index.html - - - 200 - text/html;charset=utf-8 325.7027ms
+2022-12-06 04:50:05.693 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/_framework/aspnetcore-browser-refresh.js - -
+2022-12-06 04:50:05.697 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/_vs/browserLink - -
+2022-12-06 04:50:05.698 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/_framework/aspnetcore-browser-refresh.js - - - 200 11976 application/javascript;+charset=utf-8 5.5271ms
+2022-12-06 04:50:05.717 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 20.1206ms
+2022-12-06 04:50:05.828 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/swagger/v1/swagger.json - -
+2022-12-06 04:50:05.999 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 171.0999ms
+2022-12-06 04:51:11.437 +04:00 [INF] User profile is available. Using 'C:\Users\hp\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-12-06 04:51:11.543 +04:00 [INF] Now listening on: https://localhost:7055
+2022-12-06 04:51:11.543 +04:00 [INF] Now listening on: http://localhost:5055
+2022-12-06 04:51:11.546 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-12-06 04:51:11.546 +04:00 [INF] Hosting environment: Development
+2022-12-06 04:51:11.546 +04:00 [INF] Content root path: C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\
+2022-12-06 04:51:11.924 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/swagger/index.html - -
+2022-12-06 04:51:12.100 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/swagger/index.html - - - 200 - text/html;charset=utf-8 177.9672ms
+2022-12-06 04:51:12.111 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/_framework/aspnetcore-browser-refresh.js - -
+2022-12-06 04:51:12.111 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/_vs/browserLink - -
+2022-12-06 04:51:12.116 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/_framework/aspnetcore-browser-refresh.js - - - 200 11976 application/javascript;+charset=utf-8 5.4995ms
+2022-12-06 04:51:12.130 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 19.5085ms
+2022-12-06 04:51:12.221 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/swagger/v1/swagger.json - -
+2022-12-06 04:51:12.339 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 117.4314ms
+2022-12-06 04:55:35.346 +04:00 [INF] User profile is available. Using 'C:\Users\hp\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-12-06 04:55:35.624 +04:00 [INF] Now listening on: https://localhost:7055
+2022-12-06 04:55:35.624 +04:00 [INF] Now listening on: http://localhost:5055
+2022-12-06 04:55:35.627 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-12-06 04:55:35.627 +04:00 [INF] Hosting environment: Development
+2022-12-06 04:55:35.627 +04:00 [INF] Content root path: C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\
+2022-12-06 04:55:36.549 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/swagger/index.html - -
+2022-12-06 04:55:37.362 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/_framework/aspnetcore-browser-refresh.js - -
+2022-12-06 04:55:37.364 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/swagger/index.html - - - 200 - text/html;charset=utf-8 820.3725ms
+2022-12-06 04:55:37.379 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/_framework/aspnetcore-browser-refresh.js - - - 200 11976 application/javascript;+charset=utf-8 17.8591ms
+2022-12-06 04:55:37.398 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/_vs/browserLink - -
+2022-12-06 04:55:37.601 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 202.9950ms
+2022-12-06 04:55:37.727 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7055/swagger/v1/swagger.json - -
+2022-12-06 04:55:38.045 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7055/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 318.0575ms
+2022-12-06 05:07:48.067 +04:00 [ERR] The email or password is incorrect
+2022-12-06 05:08:52.348 +04:00 [ERR] The email or password is incorrect

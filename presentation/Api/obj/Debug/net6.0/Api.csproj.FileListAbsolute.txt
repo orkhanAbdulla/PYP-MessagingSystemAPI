@@ -91,3 +91,13 @@ C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Azu
 C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\System.IO.Hashing.dll
 C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\System.Memory.Data.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.Extensions.Logging.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.Formatting.Compact.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.AspNetCore.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.Extensions.Hosting.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.Settings.Configuration.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+C:\Users\hp\Desktop\PYP\MessagingSystemApp\presentation\Api\bin\Debug\net6.0\Serilog.Sinks.Debug.dll

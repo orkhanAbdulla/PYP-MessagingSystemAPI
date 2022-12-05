@@ -437,7 +437,8 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.0",
           "FluentValidation.DependencyInjectionExtensions": "11.2.2",
           "MediatR.Extensions.Microsoft.DependencyInjection": "11.0.0",
-          "MessagingSystemApp.Domain": "1.0.0"
+          "MessagingSystemApp.Domain": "1.0.0",
+          "Newtonsoft.Json": "13.0.2"
         },
         "runtime": {
           "MessagingSystemApp.Application.dll": {}

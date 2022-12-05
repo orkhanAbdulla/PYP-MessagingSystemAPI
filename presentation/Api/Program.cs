@@ -8,11 +8,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SendGrid.Helpers.Mail;
+using Serilog;
 using System.Data.Common;
 using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+{
+    loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration);
+});
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(options=>options.Filters.Add<ApiExceptionFilterAttribute>());
 builder.Services.AddFluentValidationAutoValidation(configuration => configuration.DisableDataAnnotationsValidation = false).AddFluentValidationClientsideAdapters();

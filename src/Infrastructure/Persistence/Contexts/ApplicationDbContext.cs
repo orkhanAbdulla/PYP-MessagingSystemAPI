@@ -29,7 +29,7 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Contexts
         public DbSet<Reaction> Reactions => Set<Reaction>();
 
         public DbSet<Attachment> Attachments => Set<Attachment>();
-
+    
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -39,5 +39,6 @@ namespace MessagingSystemApp.Infrastructure.Persistence.Contexts
         {
             optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
         }
+      
     }
 }

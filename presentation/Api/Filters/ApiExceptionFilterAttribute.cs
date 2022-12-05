@@ -8,7 +8,6 @@ namespace MessagingSystemApp.Api.Filters
     public class ApiExceptionFilterAttribute:ExceptionFilterAttribute
     {
         private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
-
         public ApiExceptionFilterAttribute()
         {
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>()
@@ -39,6 +38,11 @@ namespace MessagingSystemApp.Api.Filters
             if (!context.ModelState.IsValid)
             {
                 HandleInvalidModelStateException(context);
+                return;
+            }
+            else
+            {
+                HandleUnhandledBehaviourException(context);
                 return;
             }
         }
@@ -159,6 +163,25 @@ namespace MessagingSystemApp.Api.Filters
             };
 
             context.Result = new BadRequestObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
+        private void HandleUnhandledBehaviourException(ExceptionContext context)
+        {
+            var exception = context.Exception;
+
+            var details = new ProblemDetails()
+            {
+                Status= StatusCodes.Status500InternalServerError,
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = "Internal Server Error",
+                Detail = exception.Message
+            };
+
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
 
             context.ExceptionHandled = true;
         }
