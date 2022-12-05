@@ -2,6 +2,7 @@
 using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
 using MessagingSystemApp.Application.Abstractions.Repositories;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.StorageServices;
 using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Application.Common.Exceptions;
@@ -20,19 +21,22 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
     public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommandRequest, UpdatePostCommandResponse>
     {
         private readonly IPostRepository _postRepository;
+        private readonly IAuthService _authService;
 
-        public UpdatePostCommandHandler(IPostRepository postRepository)
+        public UpdatePostCommandHandler(IPostRepository postRepository, IAuthService authService = null)
         {
             _postRepository = postRepository;
+            _authService = authService;
         }
 
         public async Task<UpdatePostCommandResponse> Handle(UpdatePostCommandRequest request, CancellationToken cancellationToken)
         {
+            Employee employee = await _authService.GetUserAuthAsync();
             Post post = await _postRepository.GetAsync(x => x.Id == request.Id &&x.IsReply==false,true,nameof(Connection));
             if (post == null) throw new NotFoundException(nameof(Post), request.Id);
-            var result = post.EmployeeId == request.EmployeeId;
+            var result = post.EmployeeId == employee.Id;
             if (!result) throw new BadRequestException
-                        ($"The PostId:\"{post.Id}\"is not created by EmployeeId:\"{request.EmployeeId}\"");
+                        ($"The PostId:\"{post.Id}\"is not created by EmployeeId:\"{employee.Id}\"");
             result = post.Connection.Id != request.ConnectionId;
             if (result) throw new BadRequestException
                         ($"The PostId:\"{post.Id}\"is not created in ConnectionId:\"{request.ConnectionId}\"");

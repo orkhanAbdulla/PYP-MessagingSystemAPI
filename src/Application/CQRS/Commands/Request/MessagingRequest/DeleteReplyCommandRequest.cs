@@ -11,7 +11,6 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Request.MessagingRequest
     public class DeleteReplyCommandRequest:IRequest<DeleteReplyCommandResponse>
     {
         public int Id { get; set; }
-        public string EmployeeId { get; set; } = null!;
         public int ConnectionId { get; set; }
     }
 }

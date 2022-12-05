@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Identity;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.Common.Helpers;
@@ -19,22 +20,20 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
     public class ReactionCommanHandler : IRequestHandler<ReactionCommandRequest, ReactionCommandResponse>
     {
         private readonly IReactionRepository _reactionRepository;
+        private readonly IAuthService _authService;
         private readonly IPostRepository _postRepository;
-        private readonly IUserService _userService;
 
-        public ReactionCommanHandler(IReactionRepository reactionRepository, IPostRepository postRepository, IUserService userService)
+        public ReactionCommanHandler(IReactionRepository reactionRepository, IPostRepository postRepository, IAuthService authService)
         {
             _reactionRepository = reactionRepository;
             _postRepository = postRepository;
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<ReactionCommandResponse> Handle(ReactionCommandRequest request, CancellationToken cancellationToken)
         {
             Post post = await _postRepository.GetAsync(x => x.Id == request.PostId, true, nameof(Connection));
             if (post == null) throw new NotFoundException(nameof(Post), request.PostId);
-            bool isExsist = await _userService.IsExistAsync(x => x.Id == request.EmployeeId);
-            if (!isExsist) throw new NotFoundException(nameof(Employee), request.EmployeeId);
             var result = post.Connection.Id != request.ConnectionId;
             if (result) throw new BadRequestException
                         ($"The PostId:\"{post.Id}\"is not created in ConnectionId:\"{request.ConnectionId}\"");

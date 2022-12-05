@@ -14,7 +14,6 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Request.MessagingRequest
         public int PostId { get; set; }
         public Emoji Emoji { get; set; }
         public int ConnectionId { get; set; }
-        public string EmployeeId { get; set; } = null!;
        
     }
 }

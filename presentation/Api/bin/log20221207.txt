@@ -231,3 +231,4 @@ Error Number:547,State:0,Class:16
    at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
    at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
 2022-12-07 06:44:58.294 +04:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+2022-12-07 07:07:00.668 +04:00 [ERR] Entity "Connection" 1 was not found

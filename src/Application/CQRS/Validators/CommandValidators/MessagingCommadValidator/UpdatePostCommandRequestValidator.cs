@@ -13,7 +13,6 @@ namespace MessagingSystemApp.Application.CQRS.Validators.CommandValidators.PostC
         public UpdatePostCommandRequestValidator()
         {
             RuleFor(x => x.Id).NotNull().NotEmpty();
-            RuleFor(x => x.EmployeeId).NotEmpty().NotNull();
             RuleFor(x => x.ConnectionId).NotNull().NotEmpty();
             RuleFor(x => x.Message).NotEmpty().NotNull();
         }

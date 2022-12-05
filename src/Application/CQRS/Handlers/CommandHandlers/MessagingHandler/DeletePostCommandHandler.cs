@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using MessagingSystemApp.Application.Abstractions.Repositories;
+using MessagingSystemApp.Application.Abstractions.Services.IdentityServices;
 using MessagingSystemApp.Application.Abstractions.Services.StorageServices.Base;
 using MessagingSystemApp.Application.Abstracts.Repositories;
 using MessagingSystemApp.Application.Common.Exceptions;
 using MessagingSystemApp.Application.CQRS.Commands.Request.MessagingRequest;
 using MessagingSystemApp.Application.CQRS.Commands.Response.MessagingResponse;
 using MessagingSystemApp.Domain.Entities;
+using MessagingSystemApp.Domain.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
     {
         private readonly IPostRepository _postRepository;
         private readonly IAttachmentRepository _attachmentRepository;
+        private readonly IAuthService _authService;
         private readonly IStorage _storage;
 
         public DeletePostCommandHandler(IPostRepository postRepository, IStorage storage, IAttachmentRepository attachmentRepository)
@@ -29,11 +32,12 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
 
         public async Task<DeletePostCommandResponse> Handle(DeletePostCommandRequest request, CancellationToken cancellationToken)
         {
+            Employee employee = await _authService.GetUserAuthAsync();
             Post post = await _postRepository.GetAsync(x => x.Id == request.Id, true, nameof(Connection));
             if (post == null) throw new NotFoundException(nameof(Post), request.Id);
-            var result = post.EmployeeId == request.EmployeeId;
+            var result = post.EmployeeId == employee.Id;
             if (!result) throw new BadRequestException
-                        ($"The PostId:\"{post.Id}\"is not created by EmployeeId:\"{request.EmployeeId}\"");
+                        ($"The PostId:\"{post.Id}\"is not created by EmployeeId:\"{employee.Id}\"");
             result = post.Connection.Id == request.ConnectionId;
             if (!result) throw new BadRequestException
                         ($"The PostId:\"{post.Id}\"is not created in ConnectionId:\"{request.ConnectionId}\"");

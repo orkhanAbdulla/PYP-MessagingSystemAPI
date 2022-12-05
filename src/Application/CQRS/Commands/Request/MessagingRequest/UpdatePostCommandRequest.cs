@@ -15,7 +15,6 @@ namespace MessagingSystemApp.Application.CQRS.Commands.Request.MessagingRequest
     {
         public int Id { get; set; }
         public int ConnectionId { get; set; }
-        public string EmployeeId { get; set; } = null!;
         public string Message { get; set; } = null!;
     }
 }
