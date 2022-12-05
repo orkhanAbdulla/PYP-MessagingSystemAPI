@@ -20,14 +20,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.MessagingHandler
 {
-    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommandRequest,CreatePostCommandResponse>
+    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommandRequest, CreatePostCommandResponse>
     {
-        private readonly IAuthService  _authService;
+        private readonly IAuthService _authService;
         private readonly IConnectionRepository _connectionRepository;
         private readonly IEmployeeChannelRepository _employeeChannelRepository;
         private readonly IStorageService _storageService;
@@ -36,7 +37,7 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
         private readonly IMessagingHubService _messagingHubService;
         private readonly IMapper _mapper;
 
-        public CreatePostCommandHandler(IAuthService authService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IStorageService storageService, IMapper mapper, IPostRepository postRepository, IAttachmentRepository attachmentRepository,IMessagingHubService messagingHubService)
+        public CreatePostCommandHandler(IAuthService authService, IConnectionRepository connectionRepository, IEmployeeChannelRepository employeeChannelRepository, IStorageService storageService, IMapper mapper, IPostRepository postRepository, IAttachmentRepository attachmentRepository, IMessagingHubService messagingHubService)
         {
             _authService = authService;
             _connectionRepository = connectionRepository;
@@ -69,14 +70,10 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                 if (isExsistUserInConnection) throw new BadRequestException
                         ($"The EmployeeId:\"{employee.Id}\"is not in the Connection:\"{request.ConnectionId}\"");
             }
-            Post post = _mapper.Map<Post>(request);
-            post.EmployeeId = employee.Id;
-            await _postRepository.AddAsync(post);
-            await _postRepository.SaveChangesAsync(cancellationToken);
-            
-            List<AttachmentGetDto> attachmentDtos = new List<AttachmentGetDto>();
+            List<Attachment>? attachments=null;
             if (request.FormCollection != null)
             {
+                List<AttachmentPostDto> attachmentDtos = new List<AttachmentPostDto>();
                 foreach (var file in request.FormCollection)
                 {
                     var isValidSize = _storageService.IsValidSize(file.Length, 1024);
@@ -84,24 +81,30 @@ namespace MessagingSystemApp.Application.CQRS.Handlers.CommandHandlers.Messaging
                     var fileType = _storageService.GetFileType(file.ContentType);
                     if (fileType == 0) throw new FileFormatException($"can't upload {file.ContentType} file");
                     var result = await _storageService.UploadAsync("attachments", file);
-                    attachmentDtos.Add(new AttachmentGetDto { FileName = result.fileName, FileType = fileType, Path = result.path,});
+                    attachmentDtos.Add(new AttachmentPostDto { FileName = result.fileName, FileType = fileType, Path = result.path, });
                 }
-                IEnumerable<Attachment> attachments = _mapper.Map<IEnumerable<Attachment>>(attachmentDtos);
+               attachments = _mapper.Map<List<Attachment>>(attachmentDtos);
+            }
+            Post post = _mapper.Map<Post>(request);
+            post.EmployeeId = employee.Id;
+            await _postRepository.AddAsync(post);
+            await _postRepository.SaveChangesAsync(cancellationToken);
+            if (attachments!=null)
+            {
+                attachments.ForEach(x=>x.PostId=post.Id);
                 await _attachmentRepository.AddRangeAsync(attachments);
                 await _attachmentRepository.SaveChangesAsync(cancellationToken);
             }
-            CreatePostCommandResponse CreatePostCommandResponse =_mapper.Map<CreatePostCommandResponse>(post);
-            CreatePostCommandResponse.AttachmentGetDtos = attachmentDtos;
             if (connection.IsChannel == true)
             {
-              await _messagingHubService.CreatePostInChannelAsync(connection.Id, request.Message, employee.UserName);
+                await _messagingHubService.CreatePostInChannelAsync(connection.Id, request.Message, employee.UserName);
             }
             else
             {
-               await _messagingHubService.CreatePostInDirectlyMessage(connection, request.Message, employee.Id, employee.UserName);
+                await _messagingHubService.CreatePostInDirectlyMessage(connection, request.Message, employee.Id, employee.UserName);
             }
 
-                return CreatePostCommandResponse;
+            return new CreatePostCommandResponse() { Id=post.Id};
         }
     }
 }

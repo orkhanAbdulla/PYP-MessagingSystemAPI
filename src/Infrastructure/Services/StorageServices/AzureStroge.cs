@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using MessagingSystemApp.Application.Abstractions.Services.StorageServices;
+using MessagingSystemApp.Application.Common.Dtos.AttachmentDtos;
 using MessagingSystemApp.Infrastructure.Services.StorageServices.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -46,5 +47,6 @@ namespace MessagingSystemApp.Infrastructure.Services.StorageServices
             string rooting = AzureStorageUrl + container + "/" + newFilename;
             return (rooting,newFilename);
         }
+
     }
 }
